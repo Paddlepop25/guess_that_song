@@ -2,11 +2,42 @@ require('dotenv').config()
 
 const express = require('express')
 const morgan = require('morgan')
-const fetch = require('node-fetch')
+// const fetch = require('node-fetch')
 // const cors = require('cors')
 var request = require('request') // "Request" library
+const mysql = require('mysql2/promise')
+const { get } = require('request')
+
+const app = express()
+app.use(morgan('combined'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+// app.use(cors())
 
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
+
+const pool = mysql.createPool({
+  host: process.env.MYSQL_SERVER || 'localhost',
+  user: process.env.MYSQL_USERNAME,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+  connectionLimit: process.env.MYSQL_CON_LIMIT || 4,
+  timezone: '+08:00',
+})
+
+const makeSQLQuery = (sql, pool) => {
+  return async (args) => {
+    const conn = await pool.getConnection()
+    try {
+      let results = await conn.query(sql, args || [])
+      return results[0] // index0 = data, index1 = metadata
+    } catch (error) {
+      console.error('Error in making SQL query >>>', error)
+    } finally {
+      conn.release()
+    }
+  }
+}
 
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
@@ -36,12 +67,6 @@ const authOptions = {
   json: true,
 }
 
-const app = express()
-app.use(morgan('combined'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-// app.use(cors())
-
 // test
 app.get('/', (req, res) => {
   res.status(200)
@@ -64,102 +89,63 @@ request.post(authOptions, function (error, response, body) {
     }
     request.get(options, function (error, response, body) {
       // console.log('body ---> ', body)
-      // console.log('body ---> ', body['tracks'])
 
-      // John Mayer
-      const john_mayer = body['tracks'][0]
-      // console.log('john mayer ---> ', john_mayer)
-      // console.log('album ---> ', john_mayer['album']) // massive
-      // console.log('artist ---> ', john_mayer['album']['artists'][0]['name'])
-      // console.log('john mayer title ---> ', john_mayer['name'])
-      // console.log('preview url ---> ', john_mayer['preview_url'])
-      // console.log('images ---> ', john_mayer['album']['images'][1]['url']) // medium sized
-      // console.log('uri ---> ', john_mayer['uri'])
+      const guitar_heroes_result = body['tracks']
+      // console.log('guitar_heroes_result ---> ', guitar_heroes_result)
 
-      johnMayerArtist = john_mayer['album']['artists'][0]['name']
-      johnMayerSongTitle = john_mayer['name']
-      johnMayerPreviewUrl = john_mayer['preview_url']
-      console.log('>>>>>>> ', johnMayerArtist) // ok
-      johnMayerImage = john_mayer['album']['images'][1]['url']
-      johnMayerURI = john_mayer['uri']
-
-      // Meghan Trainer
-      const meghan_trainer = body['tracks'][1]
-      // console.log('meghan_trainer ---> ', meghan_trainer)
-      // console.log('album ---> ', meghan_trainer['album']) // massive
-      // console.log('artist ---> ', meghan_trainer['album']['artists'][0]['name'])
-      // console.log('meghan_trainer title ---> ', meghan_trainer['name'])
-      // console.log('preview url ---> ', meghan_trainer['preview_url'])
-      // console.log('images ---> ', meghan_trainer['album']['images'][1]['url']) // medium sized
-      // console.log('uri ---> ', meghan_trainer['uri'])
-
-      meghanTrainerArtist = meghan_trainer['album']['artists'][0]['name']
-      console.log('>>>>>>> ', meghanTrainerArtist) // ok
-      meghanTrainerSongTitle = meghan_trainer['name']
-      meghanTrainerPreviewUrl = meghan_trainer['preview_url']
-      meghanTrainerImage = meghan_trainer['album']['images'][1]['url']
-      meghanTrainerURI = meghan_trainer['uri']
-
-      // Meghan Trainer
-      const eric_clapton = body['tracks'][2]
-      // console.log('eric_clapton ---> ', eric_clapton)
-      // console.log('album ---> ', eric_clapton['album']) // massive
-      // console.log('artist ---> ', eric_clapton['album']['artists'][0]['name'])
-      // console.log(
-      //   'eric_clapton title ---> ',
-      //   eric_clapton['name'].substring(0, 15)
-      // )
-      // console.log('preview url ---> ', eric_clapton['preview_url'])
-      // console.log('images ---> ', eric_clapton['album']['images'][1]['url']) // medium sized
-      // console.log('uri ---> ', eric_clapton['uri'])
-
-      ericClaptonArtist = eric_clapton['album']['artists'][0]['name']
-      console.log('>>>>>>> ', ericClaptonArtist) // ok
-      ericClaptonSongTitle = eric_clapton['name'].substring(0, 15)
-      ericClaptonPreviewUrl = eric_clapton['preview_url']
-      ericClaptonImage = eric_clapton['album']['images'][1]['url']
-      ericClaptonURI = eric_clapton['uri']
-
-      // John Legend
-      const john_legend = body['tracks'][3]
-      // console.log('john legend ---> ', john_legend)
-      // console.log('artist ---> ', john_legend['album']['artists'][0]['name'])
-      // console.log('john legend title ---> ', john_legend['name'])
-      // console.log('preview url ---> ', john_legend['preview_url'])
-      // console.log('images ---> ', john_legend['album']['images'][1]['url']) // medium sized
-      // console.log('uri ---> ', john_legend['uri'])
-
-      johnLegendArtist = john_legend['album']['artists'][0]['name']
-      console.log('>>>>>>> ', johnLegendArtist) // ok
-      johnLegendSongTitle = john_legend['name']
-      johnLegendPreviewUrl = john_legend['preview_url']
-      johnLegendImage = john_legend['album']['images'][1]['url']
-      johnLegendURI = john_legend['uri']
-
-      // Cold Play
-      const cold_play = body['tracks'][4]
-      // console.log('cold play ---> ', cold_play)
-      // console.log('artist ---> ', cold_play['album']['artists'][0]['name'])
-      // console.log('cold play title ---> ', cold_play['name'])
-      // console.log('preview url ---> ', cold_play['preview_url'])
-      // console.log('images ---> ', cold_play['album']['images'][1]['url']) // medium sized
-      // console.log('uri ---> ', cold_play['uri'])
-
-      coldPlayArtist = cold_play['album']['artists'][0]['name']
-      console.log('>>>>>>> ', coldPlayArtist) // ok
-      coldPlaySongTitle = cold_play['name']
-      coldPlayPreviewUrl = cold_play['preview_url']
-      coldPlayImage = cold_play['album']['images'][1]['url']
-      coldPlayURI = cold_play['uri']
+      let guitar_heroes_arr = []
+      for (let i = 0; i < guitar_heroes_result.length; i++) {
+        let obj = {}
+        obj.artist = guitar_heroes_result[i]['album']['artists'][0]['name']
+        obj.title = guitar_heroes_result[i]['name']
+        obj.preview = guitar_heroes_result[i]['preview_url']
+        obj.image = guitar_heroes_result[i]['album']['images'][1]['url']
+        obj.uri = guitar_heroes_result[i]['uri']
+        guitar_heroes_arr.push(obj)
+      }
+      // console.log(guitar_heroes_arr)
 
       app.get('/guitar_heroes', (req, res) => {
         res.status(200)
         res.type('application/json')
-        res.json(john_mayer)
+        res.send(guitar_heroes_arr)
       })
     })
   }
 })
+
+const SQL_READ_ALL_DB = `SELECT * FROM songs;`
+const getAllSongs = makeSQLQuery(SQL_READ_ALL_DB, pool)
+
+app.get('/allsongs', (req, res) => {
+  getAllSongs([])
+    .then((results) => {
+      // console.info(results[0])
+      res.status(200).json(results)
+    })
+    .catch((error) => {
+      console.error('Error in reading from SQL >>> ', error)
+      res.status(500).end()
+    })
+})
+
+// const SQL_READ_ONE_DB = 'SELECT * FROM songs WHERE id=?'
+// const getOneSong = makeSQLQuery(SQL_READ_ONE_DB, pool)
+
+// app.get('/song/:id', async (req, res) => {
+//   const id = parseInt(req.params['id'])
+//   // console.log(id)
+
+//   await getOneSong(id)
+//     .then((result) => {
+//       console.info(result)
+//       res.status(200).json(result)
+//     })
+//     .catch((error) => {
+//       console.error('Error in reading from SQL >>> ', error)
+//       res.status(500).end()
+//     })
+// })
 
 // app.get('/song1', (req, res) => {
 //   const body = { grant_type: 'client_credentials' }
