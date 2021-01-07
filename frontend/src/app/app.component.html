@@ -1,14 +1,19 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand">Guess That Song</a>
   <div class="d-flex justify-content-end">
-    <a class="navbar-brand">Guess That Song</a>
-    <button class="btn btn-info mr-3" [routerLink]="['/login']">Login</button>
-    <button class="btn btn-warning mr-3" [routerLink]="['/register']">
+    <button class="btn btn-outline-info mr-3" [routerLink]="['/login']">
+      Login
+    </button>
+    <button class="btn btn-outline-warning mr-3" [routerLink]="['/register']">
       Register
     </button>
-    <button class="btn btn-success mr-3" [routerLink]="['/guessthatsong']">
+    <button
+      class="btn btn-outline-success mr-3"
+      [routerLink]="['/guessthatsong']"
+    >
       Play
     </button>
-    <button class="btn btn-outline-success" [routerLink]="['/']">Home</button>
+    <button class="btn btn-outline-primary" [routerLink]="['/']">Home</button>
   </div>
 </nav>
 <div class="container">

@@ -1,8 +1,17 @@
 <div *ngFor="let song of guitar_heroes">
+  <div class="card mt-5" style="width: 18rem">
+    <img src="{{ song.image }}" class="card-img-top" alt="not available" />
+    <div class="card-body">
+      <h4 class="card-title">{{ song.artist }}</h4>
+      <h6 class="card-text">Preview song</h6>
+      <video controls="" name="media">
+        <source src="{{ song.preview }}" type="audio/mpeg" />
+      </video>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
   <!-- <button class="btn btn-warning" click="play{{ song.preview }}">Play</button> -->
-  <video controls="" name="media" style="outline: none; height: 108px">
-    <source src="{{ song.preview }}" type="audio/mpeg" />
-  </video>
 </div>
 
 <!-- 

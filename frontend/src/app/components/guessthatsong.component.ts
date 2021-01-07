@@ -17,7 +17,7 @@ export class GuessthatsongComponent implements OnInit {
     this.guessThatSongSvc.getGuitarHeroes()
       .then(result => {
         this.guitar_heroes = result
-        console.log(result)
+        // console.log(result)
       })
   }
 }
