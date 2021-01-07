@@ -6,7 +6,6 @@ const morgan = require('morgan')
 // const cors = require('cors')
 var request = require('request') // "Request" library
 const mysql = require('mysql2/promise')
-const { get } = require('request')
 
 const app = express()
 app.use(morgan('combined'))
@@ -88,8 +87,6 @@ request.post(authOptions, function (error, response, body) {
       json: true,
     }
     request.get(options, function (error, response, body) {
-      // console.log('body ---> ', body)
-
       const guitar_heroes_result = body['tracks']
       // console.log('guitar_heroes_result ---> ', guitar_heroes_result)
 
