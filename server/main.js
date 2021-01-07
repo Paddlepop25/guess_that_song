@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 // const fetch = require('node-fetch')
-// const cors = require('cors')
+const cors = require('cors')
 var request = require('request') // "Request" library
 const mysql = require('mysql2/promise')
 
@@ -11,7 +11,7 @@ const app = express()
 app.use(morgan('combined'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-// app.use(cors())
+app.use(cors())
 
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 
