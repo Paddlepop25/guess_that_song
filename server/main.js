@@ -4,15 +4,12 @@ const express = require('express')
 const morgan = require('morgan')
 // const fetch = require('node-fetch')
 const cors = require('cors')
-var request = require('request')
+const request = require('request')
 const mysql = require('mysql2/promise')
-const sha = require('sha1')
-
-const app = express()
-app.use(morgan('combined'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+const sha1 = require('sha1')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+const jwt = require('jsonwebtoken')
 
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 
@@ -38,6 +35,8 @@ const makeSQLQuery = (sql, pool) => {
     }
   }
 }
+
+const PASSPORT_TOKEN_SECRET = process.env.PASSPORT_TOKEN_SECRET
 
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
@@ -68,6 +67,71 @@ const authOptions = {
   json: true,
 }
 
+const SQL_GET_USER = `SELECT * FROM users where username=?`
+const getUser = makeSQLQuery(SQL_GET_USER, pool)
+
+const makeAuthMiddleware = (passport) => {
+  return (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      console.log('error ---> ', err)
+      console.log('user ---> ', user)
+      if (null != err || !user) {
+        res.status(401)
+        res.type('application/json')
+        res.json({ error: err }) // getting error
+        return
+      }
+      req.user = user
+      next()
+    })(req, res, next)
+  }
+}
+
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: 'username',
+      passwordField: 'password',
+      passReqToCallback: true,
+    },
+    (req, user, password, done) => {
+      console.info(`username: ${user}, password: ${password}`)
+      // console.log('req >>>> ', req)
+
+      // perform authentication
+      getUser([user]).then((result) => {
+        console.log('result ---> ', result) // []
+        console.log('result.length ---> ', result.length) // 0
+        if (result.length > 0) {
+          const sqlUser = result[0].username
+          const sqlPassword = result[0].password
+
+          if (user == sqlUser && sha1(password) == sqlPassword) {
+            console.log(' >>> Username & PW matches mySQL <<< ')
+            done(null, {
+              username: user,
+              loginTime: new Date().toString(),
+              // security: 2,
+            })
+            return
+          }
+          // incorrect login
+          done('Incorrect username and password', false)
+        }
+      })
+    }
+  )
+)
+
+const localStrategyAuth = makeAuthMiddleware(passport)
+
+const app = express()
+app.use(morgan('combined'))
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(passport.initialize())
+
 // test
 app.get('/', (req, res) => {
   res.status(200)
@@ -79,16 +143,7 @@ const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_k
 const registerUsers = makeSQLQuery(SQL_REGISTER_USER, pool)
 
 app.post('/register', express.json(), (req, res) => {
-  console.info('req.body >>> ', req.body)
-
-  // req.body >>>  {
-  //   username: 'fred',
-  //   password: 'fred',
-  //   email: 'fred@gmail.com',
-  //   image_key: 'asd.png',
-  //   score: 2,
-  //   timestamp: '2021-11-08'
-  // }
+  // console.info('req.body >>> ', req.body)
 
   const username = req.body.username
   const password = sha(req.body.password)
@@ -107,6 +162,35 @@ app.post('/register', express.json(), (req, res) => {
       res.status(500).json(error)
     })
 })
+
+app.post(
+  '/login',
+  localStrategyAuth, // middleware written above
+  (req, res) => {
+    // generate JWT token
+    const timestamp = new Date().getTime() / 1000
+    const token = jwt.sign(
+      {
+        sub: req.user.username,
+        iss: 'guessthatsong',
+        iat: timestamp, // need to be in seconds
+        exp: timestamp + 60 * 60, // only available for an hour
+        data: {
+          // your own information can come from database, etc
+          loginTime: req.user.loginTime,
+          // security: req.user.security,
+          // sign: 'linda',
+        },
+      },
+      PASSPORT_TOKEN_SECRET
+    )
+    console.info(`user: `, req.user) // user is created by passport and give us info
+    // generate JWT token
+    res.status(200)
+    res.type('application/json')
+    res.json({ message: `Login at ${new Date()}`, token })
+  }
+)
 
 request.post(authOptions, function (error, response, body) {
   if (!error && response.statusCode === 200) {

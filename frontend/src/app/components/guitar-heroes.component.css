@@ -14,3 +14,10 @@ video {
   position: relative;
   top: -2rem;
 }
+
+.song_title {
+  margin: 0 auto;
+  width: 90%;
+  position: relative;
+  top: -2rem;
+}

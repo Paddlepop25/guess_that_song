@@ -31,5 +31,4 @@ export class GuitarHeroesComponent implements OnInit {
     this.guitarHeroesArray = this.guessThatSongSvc.retrieveGuitarHeroesSongs()     
     console.log(this.guitarHeroesArray) 
     }
-
 }
