@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup
 
-  constructor(private fb: FormBuilder, private userSvc: UserService) { }
+  constructor(private fb: FormBuilder, private userSvc: UserService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -25,9 +26,11 @@ export class LoginComponent implements OnInit {
     const username = this.loginForm.get('username').value
     const password = this.loginForm.get('password').value
 
-    this.userSvc.userLogin({username, password})
+    this.userSvc.userLogin(username, password)
 
     console.log('USER IS LOGGED IN')
+
+    this.loginForm.reset()
 
   }
 

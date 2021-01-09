@@ -10,6 +10,7 @@ const sha1 = require('sha1')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 
@@ -125,9 +126,38 @@ passport.use(
 
 const localStrategyAuth = makeAuthMiddleware(passport)
 
+async function sendMail(user) {
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.MY_EMAIL,
+      pass: process.env.MY_EMAIL_PASSWORD,
+    },
+  })
+
+  let mailOptions = {
+    from: 'Guess That Song 🎵 ', // sender address
+    to: user.email, // possible to send to list of receivers
+    subject: 'Congratulations! You are registered 💌 ', // subject line
+    html: `<h3>Hello ${user.username}</h3>
+        <p>You can now play GUESS THAT SONG 🎶. All the best!</p>`,
+  }
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('ERROR in sending email to user >>>> ', error)
+    } else {
+      console.log('Email sent >>>> ' + info.response)
+    }
+  })
+}
+
 const app = express()
 app.use(morgan('combined'))
-app.use(cors())
+app.use(cors({ origin: '*' }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
@@ -143,12 +173,12 @@ const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_k
 const registerUsers = makeSQLQuery(SQL_REGISTER_USER, pool)
 
 app.post('/register', express.json(), (req, res) => {
-  // console.info('req.body >>> ', req.body)
-
+  const user = req.body
+  console.info('req.body >>> ', req.body)
   const username = req.body.username
-  const password = sha(req.body.password)
-  // console.log('password >>>> ', password)
   const email = req.body.email
+  const password = sha1(req.body.password)
+  // console.log('password >>>> ', password)
   const image_key = req.body.image_key
   const score = req.body.score
 
@@ -161,6 +191,8 @@ app.post('/register', express.json(), (req, res) => {
       console.error('ERROR registering user >>>> ', error)
       res.status(500).json(error)
     })
+
+  sendMail(user)
 })
 
 app.post(
