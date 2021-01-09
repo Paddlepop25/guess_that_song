@@ -1,0 +1,43 @@
+<div class="row">
+  <div *ngFor="let song of guitar_heroes">
+    <div class="col col-sm-4">
+      <div class="card mt-5" style="width: 18rem">
+        <img src="{{ song.image }}" class="card-img-top" alt="not available" />
+        <div class="card-body">
+          <h4 class="card-title">{{ song.artist }}</h4>
+          <video controls="" name="media">
+            <source src="{{ song.preview }}" type="audio/mpeg" />
+          </video>
+          <div
+            class="titles"
+            *ngFor="let g of guitarHeroesArray; let i = index"
+          >
+            <button type="button" class="{{ g.class }}">{{ g.title }}</button>
+          </div>
+        </div>
+        <!-- <button class="btn btn-warning mb-2">a</button>
+        <button class="btn btn-info mb-2">{{ song.title }}</button>
+        <button class="btn btn-dark">c</button> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- <button class="btn btn-warning" click="play{{ song.preview }}">Play</button> -->
+</div>
+
+<!-- 
+  artist: "Coldplay"
+  image: "https://i.scdn.co/image/ab67616d00001e02e21cc1db05580b6f2d2a3b6e"
+  preview: "https://p.scdn.co/mp3-preview/ceb88eddfa4bac6be64e90606741ebedf8501893?cid=f7b4d44f9119479aabe5847141835e89"
+  title: "Viva La Vida"
+  uri: "spotify:track:1mea3bSkSGXuIRvnydlB5b" -->
+
+<!-- <iframe
+    src="https://p.scdn.co/mp3-preview/104ad0ea32356b9f3b2e95a8610f504c90b0026b?cid=8897482848704f2a8f8d7c79726a70d4"
+    width="200"
+    height="60"
+    frameborder="0"
+    allowtransparency="true"
+    allow="encrypted-media"
+    transparent="0"
+  ></iframe> -->

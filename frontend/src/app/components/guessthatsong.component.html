@@ -1,32 +1,45 @@
-<div *ngFor="let song of guitar_heroes">
-  <div class="card mt-5" style="width: 18rem">
-    <img src="{{ song.image }}" class="card-img-top" alt="not available" />
-    <div class="card-body">
-      <h4 class="card-title">{{ song.artist }}</h4>
-      <h6 class="card-text">Preview song</h6>
-      <video controls="" name="media">
-        <source src="{{ song.preview }}" type="audio/mpeg" />
-      </video>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
+<div class="d-flex justify-content-around mt-5">
+  <div class="genres">
+    <img
+      src="https://images.pexels.com/photos/2299658/pexels-photo-2299658.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+      alt=""
+      width="200"
+      [routerLink]="['/guitar_heroes']"
+    />
+    <br />
+    <h2>Guitar Heroes</h2>
   </div>
 
-  <!-- <button class="btn btn-warning" click="play{{ song.preview }}">Play</button> -->
+  <div class="genres">
+    <img
+      src="https://images.pexels.com/photos/675960/mic-music-sound-singer-675960.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+      alt=""
+      width="200"
+      [routerLink]="['/pop']"
+    />
+    <br />
+    <h2>Pop</h2>
+  </div>
+
+  <div class="genres">
+    <img
+      src="https://images.pexels.com/photos/462510/pexels-photo-462510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+      alt=""
+      width="200"
+      [routerLink]="['/guitar_heroes']"
+    />
+    <br />
+    <h2>Classical</h2>
+  </div>
+
+  <div class="genres">
+    <img
+      src="https://images.pexels.com/photos/4474754/pexels-photo-4474754.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+      alt=""
+      width="200"
+      [routerLink]="['/guitar_heroes']"
+    />
+    <br />
+    <h2>Love Songs</h2>
+  </div>
 </div>
-
-<!-- 
-  artist: "Coldplay"
-  image: "https://i.scdn.co/image/ab67616d00001e02e21cc1db05580b6f2d2a3b6e"
-  preview: "https://p.scdn.co/mp3-preview/ceb88eddfa4bac6be64e90606741ebedf8501893?cid=f7b4d44f9119479aabe5847141835e89"
-  title: "Viva La Vida"
-  uri: "spotify:track:1mea3bSkSGXuIRvnydlB5b" -->
-
-<!-- <iframe
-    src="https://p.scdn.co/mp3-preview/104ad0ea32356b9f3b2e95a8610f504c90b0026b?cid=8897482848704f2a8f8d7c79726a70d4"
-    width="200"
-    height="60"
-    frameborder="0"
-    allowtransparency="true"
-    allow="encrypted-media"
-    transparent="0"
-  ></iframe> -->

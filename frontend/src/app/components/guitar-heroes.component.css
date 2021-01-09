@@ -1,14 +1,16 @@
-/* video {
+video {
   outline: none;
   height: 7.5rem;
   position: relative;
   top: -55px;
+  /* border: 1px dashed red; */
 }
 .card {
+  /* height: 720px; */
 }
 
 .titles button {
   width: 100%;
   position: relative;
   top: -2rem;
-} */
+}
