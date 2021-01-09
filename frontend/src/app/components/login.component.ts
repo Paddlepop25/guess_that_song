@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup
 
-  constructor(private fb: FormBuilder, private userSvc: UserService, private router: Router) { }
+  constructor(private fb: FormBuilder, private authSvc: AuthService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -26,12 +26,18 @@ export class LoginComponent implements OnInit {
     const username = this.loginForm.get('username').value
     const password = this.loginForm.get('password').value
 
-    this.userSvc.userLogin(username, password)
+    this.authSvc.login(username, password)
+      .then(result => {
+        if (result == true) {
+        console.log('USER IS LOGGED IN')
+          this.router.navigate(['/guessthatsong'])
+        }
 
-    console.log('USER IS LOGGED IN')
-
+        if (result == false) {
+          console.log('User is not authenticated')
+          this.router.navigate(['/register'])
+        }
+      })
     this.loginForm.reset()
-
   }
-
 }

@@ -1,5 +1,9 @@
 <div class="mt-5">
   <h3>Register Form</h3>
+  <small id="emailHelp" class="form-text text-muted"
+    >You must be registered to play.</small
+  >
+  <br />
   <form [formGroup]="registerForm">
     <div class="form-group">
       <label>Username</label>
@@ -35,9 +39,6 @@
         placeholder="e.g. taylorschmidt@gmail.com"
         formControlName="email"
       />
-      <small id="emailHelp" class="form-text text-muted"
-        >We'll never share your email with anyone else.</small
-      >
       <div
         *ngIf="
           registerForm.get('email').invalid &&

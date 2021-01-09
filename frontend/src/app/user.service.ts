@@ -16,8 +16,4 @@ export class UserService {
       })
     return result
   }
-
-  async userLogin(username: string, password: string): Promise<any> {
-    console.log(username, password)
-  }
 }

@@ -74,8 +74,8 @@ const getUser = makeSQLQuery(SQL_GET_USER, pool)
 const makeAuthMiddleware = (passport) => {
   return (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
-      console.log('error ---> ', err)
-      console.log('user ---> ', user)
+      // console.log('error ---> ', err)
+      // console.log('user ---> ', user)
       if (null != err || !user) {
         res.status(401)
         res.type('application/json')
@@ -101,8 +101,8 @@ passport.use(
 
       // perform authentication
       getUser([user]).then((result) => {
-        console.log('result ---> ', result) // logging from db
-        console.log('result.length ---> ', result.length) // 1
+        // console.log('result ---> ', result) // logging from db
+        // console.log('result.length ---> ', result.length) // 1
         if (result.length > 0) {
           const sqlUser = result[0].username
           const sqlPassword = result[0].password
@@ -112,7 +112,6 @@ passport.use(
             done(null, {
               username: user,
               loginTime: new Date().toString(),
-              // security: 2,
             })
             return
           }
@@ -174,7 +173,7 @@ const registerUsers = makeSQLQuery(SQL_REGISTER_USER, pool)
 
 app.post('/register', express.json(), (req, res) => {
   const user = req.body
-  console.info('req.body >>> ', req.body)
+  // console.info('req.body >>> ', req.body)
   const username = req.body.username
   const email = req.body.email
   const password = sha1(req.body.password)
@@ -184,7 +183,7 @@ app.post('/register', express.json(), (req, res) => {
 
   registerUsers([username, password, email, image_key, score])
     .then((user) => {
-      console.log('user >>>> ', user)
+      console.log('Registering user success >>>> ', user)
       res.status(200).json({ Message: 'Success in registering new user' })
     })
     .catch((error) => {
@@ -216,11 +215,51 @@ app.post(
       },
       PASSPORT_TOKEN_SECRET
     )
-    console.info(`user: `, req.user) // user is created by passport and give us info
+    // console.info(`user: `, req.user) // user is created by passport and give us info
     // generate JWT token
     res.status(200)
     res.type('application/json')
     res.json({ message: `Login at ${new Date()}`, token })
+  }
+)
+
+// look for token in Http Header
+// authorization: Bearer <token>
+app.get(
+  '/protected/secret',
+  (req, res, next) => {
+    // check if the request has Authorization header
+    const auth = req.get('Authorization')
+    if (null == auth) {
+      res.status(403)
+      res.json({ Message: 'Missing authorization header' }) // only for us to know whats happening. in real life don't tell your users too much
+      return
+    }
+    // Check if token is Bearer authorization type (split up the 2)
+    // Bearer <token>
+    const terms = auth.split(' ')
+    if (terms.length < 2 || terms[0] != 'Bearer') {
+      res.status(403)
+      res.json({ Message: 'Incorrect Authorization' }) // only for us to know whats happening. in real life don't tell your users
+      return
+    }
+
+    const token = terms[1]
+    try {
+      // verify token
+      const verified = jwt.verify(token, TOKEN_SECRET)
+      console.log('verified token --->', verified) // CHECK THIS
+      req.token = verified // so next part can get the token
+      next()
+    } catch (error) {
+      res.status(403)
+      res.json({ Message: 'Incorrect token', Error: error }) // only for us to know whats happening. in real life don't tell your users
+      return
+    }
+  },
+  (req, res) => {
+    res.status(200)
+    res.json({ destination: 'secret place' }) // can be anything. we use this to protect our token
   }
 )
 

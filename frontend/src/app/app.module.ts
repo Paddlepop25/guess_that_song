@@ -15,12 +15,16 @@ import { ScoreComponent } from './components/score.component';
 
 import { GuessThatSong } from './guessthatsong.service';
 import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'guessthatsong', component: GuessthatsongComponent },
+  { 
+    path: 'guessthatsong', component: GuessthatsongComponent,  
+    canActivate : [ AuthService ]  // guard the main component if not logged in
+  },
   { path: 'guitar_heroes', component: GuitarHeroesComponent },
   { path: 'pop', component: PopComponent },
   { path: 'score', component: ScoreComponent },
@@ -45,7 +49,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [GuessThatSong, UserService],
+  providers: [GuessThatSong, UserService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
