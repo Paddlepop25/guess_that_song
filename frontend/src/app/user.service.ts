@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
 
@@ -8,16 +8,12 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   async registerUser(user: User): Promise<any> {
-    console.log(user)
+    // console.log(user) // object
+    const result = this.http.post('http://localhost:3000/register', user)
+      .toPromise()
+      .catch((error:HttpErrorResponse) => {
+        console.error('ERROR in registering user ---> ', error)
+      })
+    return result
   }
 }
-
-// export interface User {
-//   user_id?: string;
-//   username: string;
-//   password: string;
-//   email: string;
-//   image_key?: string;
-//   score?: number;
-//   timestamp?: string;
-// }
