@@ -95,13 +95,13 @@ passport.use(
       passReqToCallback: true,
     },
     (req, user, password, done) => {
-      console.info(`username: ${user}, password: ${password}`)
+      // console.info(`username: ${user}, password: ${password}`)
       // console.log('req >>>> ', req)
 
       // perform authentication
       getUser([user]).then((result) => {
-        console.log('result ---> ', result) // []
-        console.log('result.length ---> ', result.length) // 0
+        console.log('result ---> ', result) // logging from db
+        console.log('result.length ---> ', result.length) // 1
         if (result.length > 0) {
           const sqlUser = result[0].username
           const sqlPassword = result[0].password
