@@ -4,8 +4,9 @@ const express = require('express')
 const morgan = require('morgan')
 // const fetch = require('node-fetch')
 const cors = require('cors')
-var request = require('request') // "Request" library
+var request = require('request')
 const mysql = require('mysql2/promise')
+const sha = require('sha1')
 
 const app = express()
 app.use(morgan('combined'))
@@ -29,7 +30,7 @@ const makeSQLQuery = (sql, pool) => {
     const conn = await pool.getConnection()
     try {
       let results = await conn.query(sql, args || [])
-      return results[0] // index0 = data, index1 = metadata
+      return results[0]
     } catch (error) {
       console.error('Error in making SQL query >>>', error)
     } finally {
@@ -50,8 +51,9 @@ const MEGHAN_TRAINOR = process.env.MEGHAN_TRAINOR
 const ERIC_CLAPTON = process.env.ERIC_CLAPTON
 const JOHN_LEGEND = process.env.JOHN_LEGEND
 const COLDPLAY = process.env.COLDPLAY
-const GUITAR_HEROES = `${TRACKS_ENDPOINT}${JOHN_MAYER}%2C${MEGHAN_TRAINOR}%2C${ERIC_CLAPTON}%2C${JOHN_LEGEND}%2C${COLDPLAY}`
-// console.log('GUITAR_HEROES ---> ', GUITAR_HEROES)
+const EAGLES = process.env.EAGLES
+const GUITAR_HEROES = `${TRACKS_ENDPOINT}${JOHN_MAYER}%2C${MEGHAN_TRAINOR}%2C${ERIC_CLAPTON}%2C${JOHN_LEGEND}%2C${COLDPLAY}%2C${EAGLES}`
+// console.log('GUITAR_HEROES >>>> ', GUITAR_HEROES)
 
 const authOptions = {
   url: `${TOKEN_ENDPOINT}`,
@@ -73,6 +75,39 @@ app.get('/', (req, res) => {
   res.json({ Hello: 'Kitty' })
 })
 
+const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_key, score, timestamp ) values (?, ?, ?, ?, ?, CURDATE())`
+const registerUsers = makeSQLQuery(SQL_REGISTER_USER, pool)
+
+app.post('/register', express.json(), (req, res) => {
+  console.info('req.body >>> ', req.body)
+
+  // req.body >>>  {
+  //   username: 'fred',
+  //   password: 'fred',
+  //   email: 'fred@gmail.com',
+  //   image_key: 'asd.png',
+  //   score: 2,
+  //   timestamp: '2021-11-08'
+  // }
+
+  const username = req.body.username
+  const password = sha(req.body.password)
+  // console.log('password >>>> ', password)
+  const email = req.body.email
+  const image_key = req.body.image_key
+  const score = req.body.score
+
+  registerUsers([username, password, email, image_key, score])
+    .then((user) => {
+      console.log('user >>>> ', user)
+      res.status(200).json({ Message: 'Success in registering new user' })
+    })
+    .catch((error) => {
+      console.error('ERROR registering user >>>> ', error)
+      res.status(500).json(error)
+    })
+})
+
 request.post(authOptions, function (error, response, body) {
   if (!error && response.statusCode === 200) {
     // use the access token to access the Spotify Web API
@@ -88,7 +123,7 @@ request.post(authOptions, function (error, response, body) {
     }
     request.get(options, function (error, response, body) {
       const guitar_heroes_result = body['tracks']
-      // console.log('guitar_heroes_result ---> ', guitar_heroes_result)
+      // console.log('guitar_heroes_result >>>> ', guitar_heroes_result)
 
       let guitar_heroes_arr = []
       for (let i = 0; i < guitar_heroes_result.length; i++) {
@@ -111,11 +146,12 @@ request.post(authOptions, function (error, response, body) {
   }
 })
 
-const SQL_READ_ALL_DB = `SELECT * FROM songs;`
-const getAllSongs = makeSQLQuery(SQL_READ_ALL_DB, pool)
+// testing - okay
+const SQL_READ_ALL_DB = `SELECT * FROM users;`
+const getAllUsers = makeSQLQuery(SQL_READ_ALL_DB, pool)
 
-app.get('/allsongs', (req, res) => {
-  getAllSongs([])
+app.get('/getAllUsers', (req, res) => {
+  getAllUsers([])
     .then((results) => {
       // console.info(results[0])
       res.status(200).json(results)
@@ -172,14 +208,28 @@ app.get('/allsongs', (req, res) => {
 //   result.json()
 // })
 // .then((token) => {
-//   console.info('token ---> ', token)
+//   console.info('token >>>> ', token)
 // })
 // .catch((error) => {
-//   console.error('fetch token error ---> ', error)
+//   console.error('fetch token error >>>> ', error)
 // })
 // do fetch again with token for url
 // })
 
-app.listen(PORT, () => {
-  console.info(`Application started on port ${PORT} on ${new Date()}`)
-})
+pool
+  .getConnection()
+  .then((conn) => {
+    const param1 = Promise.resolve(conn)
+    const param2 = conn.ping()
+    return Promise.all([param1, param2])
+  })
+  .then((result) => {
+    const conn = result[0]
+    app.listen(PORT, () => {
+      console.info(`Application started on port ${PORT} on ${new Date()}`)
+    })
+    conn.release()
+  })
+  .catch((error) => {
+    console.error('ERROR in connecting to mySQL >>>> ', error)
+  })

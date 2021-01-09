@@ -14,6 +14,7 @@ import { PopComponent } from './components/pop.component';
 import { ScoreComponent } from './components/score.component';
 
 import { GuessThatSong } from './guessthatsong.service';
+import { UserService } from './user.service';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -44,7 +45,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [GuessThatSong],
+  providers: [GuessThatSong, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
