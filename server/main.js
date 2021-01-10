@@ -334,7 +334,7 @@ request.post(authOptions, function (error, response, body) {
         obj.uri = pop_result[i]['uri']
         pop_arr.push(obj)
       }
-      console.log(pop_arr)
+      // console.log(pop_arr)
 
       app.get('/pop', (req, res) => {
         res.status(200)

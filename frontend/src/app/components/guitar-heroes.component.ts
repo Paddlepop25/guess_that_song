@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GuessThatSong } from '../guessthatsong.service';
 
-export interface SongDetails {
-  title: string;
-  class: string;
-}
+// export interface SongDetails {
+//   title: string;
+//   class: string;
+// }
 
 @Component({
   selector: 'app-guitar-heroes',
@@ -23,8 +23,8 @@ export class GuitarHeroesComponent implements OnInit {
       
     this.guessThatSongSvc.getGuitarHeroes()
       .then(result => {
-        this.guitar_heroes = result
         // console.log(result)
+        this.guitar_heroes = result
       })
 
     // this.guessThatSongSvc.initGuitarHeroesSongs()

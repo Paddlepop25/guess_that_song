@@ -9,6 +9,8 @@
           <video controls="" name="media">
             <source src="{{ song.preview }}" type="audio/mpeg" />
           </video>
+
+          <!-- not working: display randomised titles -->
           <div
             class="titles"
             *ngFor="let g of guitarHeroesArray; let i = index"
@@ -22,8 +24,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <button class="btn btn-warning" click="play{{ song.preview }}">Play</button> -->
 </div>
 
 <!-- 

@@ -44,4 +44,14 @@ import { Injectable } from "@angular/core";
   // console.log('getGuitarHeroes >>> ', result[0]['title'])
   return result
   }
+
+  async getPop(): Promise<any> {
+    const result = await this.http.get<any>('http://localhost:3000/pop')
+    .toPromise()
+    .catch((error: HttpErrorResponse) => {
+      console.log('HttpError ---> ', error)
+    })
+  // console.log('getPop >>> ', result[0]['title'])
+  return result
+  }
  }

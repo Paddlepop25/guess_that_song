@@ -1,0 +1,33 @@
+video {
+  outline: none;
+  height: 7.5rem;
+  position: relative;
+  top: -55px;
+  /* border: 1px dashed red; */
+}
+
+h1 {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.pop {
+  margin: 0 auto;
+}
+
+.card {
+  /* height: 720px; */
+}
+
+.titles button {
+  width: 100%;
+  position: relative;
+  top: -2rem;
+}
+
+.song_title {
+  margin: 0 auto;
+  width: 90%;
+  position: relative;
+  top: -2rem;
+}

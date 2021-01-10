@@ -1,1 +1,36 @@
-<p>pop works!</p>
+<h1>Pop</h1>
+<div class="row">
+  <div *ngFor="let song of pop" class="pop">
+    <div class="col col-lg-4">
+      <div class="card mt-4" style="width: 18rem">
+        <img src="{{ song.image }}" class="card-img-top" alt="not available" />
+        <div class="card-body">
+          <h4 class="card-title">{{ song.artist }}</h4>
+          <video controls="" name="media">
+            <source src="{{ song.preview }}" type="audio/mpeg" />
+          </video>
+
+          <!-- not working: display randomised titles -->
+          <div
+            class="titles"
+            *ngFor="let g of guitarHeroesArray; let i = index"
+          >
+            <!-- <button type="button" class="{{ g.class }}">{{ g.title }}</button> -->
+          </div>
+        </div>
+        <button class="song_title btn btn-warning mb-2">a</button>
+        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
+        <button class="song_title btn btn-dark">c</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+{
+  artist: 'Michael Jackson',
+  title: 'Billie Jean',
+  preview: 'https://p.scdn.co/mp3-preview/f504e6b8e037771318656394f532dede4f9bcaea?cid=f7b4d44f9119479aabe5847141835e89',
+  image: 'https://i.scdn.co/image/ab67616d00001e024121faee8df82c526cbab2be',
+  uri: 'spotify:track:5ChkMS8OtdzJeqyybCc9R5'
+}, -->
