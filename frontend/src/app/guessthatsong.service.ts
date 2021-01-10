@@ -36,7 +36,7 @@ import { Injectable } from "@angular/core";
   // }
 
   async getGuitarHeroes(): Promise<any> {
-    const result = await this.http.get<any>('http://localhost:3000/guitar_heroes')
+    const result = await this.http.get<any>('http://localhost:3000/guessthatsong/guitar_heroes')
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.log('HttpError ---> ', error)
@@ -45,8 +45,18 @@ import { Injectable } from "@angular/core";
   return result
   }
 
+  async getGuitarHeroesArtist(artist): Promise<any> {
+    const result = await this.http.get<any>(`http://localhost:3000/guessthatsong/guitar_heroes/${artist}`)
+    .toPromise()
+    .catch((error: HttpErrorResponse) => {
+      console.log('HttpError ---> ', error)
+    })
+  // console.log('getGuitarHeroes >>> ', result) // ok
+  return result
+  }
+
   async getPop(): Promise<any> {
-    const result = await this.http.get<any>('http://localhost:3000/pop')
+    const result = await this.http.get<any>('http://localhost:3000/guessthatsong/pop')
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.log('HttpError ---> ', error)

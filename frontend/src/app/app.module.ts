@@ -27,13 +27,11 @@ const appRoutes: Routes = [
     // canActivate : [ AuthService ]  // guard this component if not logged in
   },
   { 
-    // path: 'guessthatsong/guitar_heroes', component: GuitarHeroesComponent, 
-    path: 'guitar_heroes', component: GuitarHeroesComponent, 
+    path: 'guessthatsong/guitar_heroes', component: GuitarHeroesComponent, 
     // canActivate : [ AuthService ]  // guard this component if not logged in
   },
   { 
-    // path: 'guessthatsong/pop', component: PopComponent, 
-    path: 'pop', component: PopComponent, 
+    path: 'guessthatsong/pop', component: PopComponent, 
     // canActivate : [ AuthService ]  // guard this component if not logged in
   },
   { 

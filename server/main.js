@@ -314,7 +314,7 @@ request.post(authOptions, function (error, response, body) {
       // console.log(guitar_heroes_arr)
 
       // app.get('/guessthatsong/:genre', (req, res) => {
-      app.get('/guitar_heroes', (req, res) => {
+      app.get('/guessthatsong/guitar_heroes', (req, res) => {
         res.status(200)
         res.type('application/json')
         res.send(guitar_heroes_arr)
@@ -338,7 +338,7 @@ request.post(authOptions, function (error, response, body) {
       }
       // console.log(pop_arr)
 
-      app.get('/pop', (req, res) => {
+      app.get('/guessthatsong/pop', (req, res) => {
         res.status(200)
         res.type('application/json')
         res.send(pop_arr)
@@ -348,32 +348,14 @@ request.post(authOptions, function (error, response, body) {
 })
 
 // testing - okay
-const SQL_READ_ALL_DB = `SELECT * FROM users;`
-const getAllUsers = makeSQLQuery(SQL_READ_ALL_DB, pool)
+// const SQL_READ_ALL_DB = `SELECT * FROM users;`
+// const getAllUsers = makeSQLQuery(SQL_READ_ALL_DB, pool)
 
-app.get('/getAllUsers', (req, res) => {
-  getAllUsers([])
-    .then((results) => {
-      // console.info(results[0])
-      res.status(200).json(results)
-    })
-    .catch((error) => {
-      console.error('Error in reading from SQL >>> ', error)
-      res.status(500).end()
-    })
-})
-
-// const SQL_READ_ONE_DB = 'SELECT * FROM songs WHERE id=?'
-// const getOneSong = makeSQLQuery(SQL_READ_ONE_DB, pool)
-
-// app.get('/song/:id', async (req, res) => {
-//   const id = parseInt(req.params['id'])
-//   // console.log(id)
-
-//   await getOneSong(id)
-//     .then((result) => {
-//       console.info(result)
-//       res.status(200).json(result)
+// app.get('/getAllUsers', (req, res) => {
+//   getAllUsers([])
+//     .then((results) => {
+//       // console.info(results[0])
+//       res.status(200).json(results)
 //     })
 //     .catch((error) => {
 //       console.error('Error in reading from SQL >>> ', error)
@@ -381,41 +363,24 @@ app.get('/getAllUsers', (req, res) => {
 //     })
 // })
 
-// app.get('/song1', (req, res) => {
-//   const body = { grant_type: 'client_credentials' }
-//   // Basic <base64 encoded client_id:client_secret>
-//   const authString = new Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString(
-//     'base64'
-//   )
-//   fetch(TOKEN_ENDPOINT, {
-//     method: 'post',
-//     // body: JSON.stringify(body),
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded',
-//       Authorization: 'Basic ' + authString,
-//     },
-//   })
-// fetch documentation
-// const body = { a: 1 };
-// fetch('https://httpbin.org/post', {
-//         method: 'post',
-//         body:    JSON.stringify(body),
-//         headers: { 'Content-Type': 'application/json' },
-//     })
-//     .then(res => res.json())
-//     .then(json => console.log(json));
-// .then((result) => {
-//   console.log(result)
-//   result.json()
-// })
-// .then((token) => {
-//   console.info('token >>>> ', token)
-// })
-// .catch((error) => {
-//   console.error('fetch token error >>>> ', error)
-// })
-// do fetch again with token for url
-// })
+// SELECT * FROM guitar_heroes where artist='Jimi Hendrix';
+const SQL_GET_ONE_ARTIST = 'SELECT * FROM guitar_heroes WHERE artist=?'
+const getOneArtist = makeSQLQuery(SQL_GET_ONE_ARTIST, pool)
+
+app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
+  const artist = req.params['artist']
+  console.log('artist >>>> ', artist)
+
+  await getOneArtist(artist)
+    .then((result) => {
+      console.info(result)
+      res.status(200).json(result)
+    })
+    .catch((error) => {
+      console.error('Error in reading from SQL >>> ', error)
+      res.status(500).end()
+    })
+})
 
 pool
   .getConnection()
