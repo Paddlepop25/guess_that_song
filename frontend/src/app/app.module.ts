@@ -16,6 +16,7 @@ import { ScoreComponent } from './components/score.component';
 import { GuessThatSong } from './guessthatsong.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
+import { MapService } from './map.service';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -60,7 +61,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [GuessThatSong, UserService, AuthService],
+  providers: [GuessThatSong, UserService, AuthService, MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

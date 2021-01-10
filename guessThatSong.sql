@@ -96,6 +96,7 @@ values ('wilma', sha1('wilma'), 'wilma@gmail.com', '0804616097393_pup.jpeg', 3, 
 
 -- see all rows from tables --
 SELECT * FROM guitar_heroes;
+SELECT * FROM pop;
 SELECT * FROM users;
 SELECT * FROM users where user_id=4;
 
