@@ -15,7 +15,7 @@ export interface SongDetails {
 export class GuitarHeroesComponent implements OnInit {
 
   guitar_heroes: [] = []
-  guitarHeroesArray: SongDetails[] = [];
+  // guitarHeroesArray: SongDetails[] = [];
 
   constructor(private guessThatSongSvc: GuessThatSong) { }
 
@@ -27,8 +27,8 @@ export class GuitarHeroesComponent implements OnInit {
         // console.log(result)
       })
 
-    this.guessThatSongSvc.initGuitarHeroesSongs()
-    this.guitarHeroesArray = this.guessThatSongSvc.retrieveGuitarHeroesSongs()     
-    console.log(this.guitarHeroesArray) 
+    // this.guessThatSongSvc.initGuitarHeroesSongs()
+    // this.guitarHeroesArray = this.guessThatSongSvc.retrieveGuitarHeroesSongs()     
+    // console.log(this.guitarHeroesArray) 
     }
 }

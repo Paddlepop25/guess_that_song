@@ -1,9 +1,11 @@
 <div class="mt-5">
   <h3>Register Form</h3>
-  <small id="emailHelp" class="form-text text-muted"
-    >You must be registered to play.</small
+  <small class="form-text text-muted">You must be registered to play.</small>
+  <small class="form-text text-muted"
+    >Have an account? <a [routerLink]="['/login']">Login</a></small
   >
   <br />
+
   <form [formGroup]="registerForm">
     <div class="form-group">
       <label>Username</label>

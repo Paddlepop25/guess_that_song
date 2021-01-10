@@ -5,6 +5,15 @@ video {
   top: -55px;
   /* border: 1px dashed red; */
 }
+
+h1 {
+  text-align: center;
+  margin-top: 30px;
+}
+.guitar_heroes {
+  margin: 0 auto;
+}
+
 .card {
   /* height: 720px; */
 }

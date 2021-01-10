@@ -43,17 +43,26 @@ const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 const TRACKS_ENDPOINT = 'https://api.spotify.com/v1/tracks?ids='
-// const ENDPOINT = 'https://api.spotify.com/v1/tracks/'
-// const JOHN_MAYER_URL = ENDPOINT + process.env.JOHN_MAYER
 
+// guitar_heroes
 const JOHN_MAYER = process.env.JOHN_MAYER
-const MEGHAN_TRAINOR = process.env.MEGHAN_TRAINOR
 const ERIC_CLAPTON = process.env.ERIC_CLAPTON
-const JOHN_LEGEND = process.env.JOHN_LEGEND
 const COLDPLAY = process.env.COLDPLAY
 const EAGLES = process.env.EAGLES
-const GUITAR_HEROES = `${TRACKS_ENDPOINT}${JOHN_MAYER}%2C${MEGHAN_TRAINOR}%2C${ERIC_CLAPTON}%2C${JOHN_LEGEND}%2C${COLDPLAY}%2C${EAGLES}`
+const JIMI_HENDRIX = process.env.JIMI_HENDRIX
+const TOMMY_EMMANUEL = process.env.TOMMY_EMMANUEL
+const GUITAR_HEROES = `${TRACKS_ENDPOINT}${JOHN_MAYER}%2C${ERIC_CLAPTON}%2C${COLDPLAY}%2C${EAGLES}%2C${JIMI_HENDRIX}%2C${TOMMY_EMMANUEL}`
 // console.log('GUITAR_HEROES >>>> ', GUITAR_HEROES)
+
+// pop
+const MICHAEL_JACKSON = process.env.MICHAEL_JACKSON
+const JAMES_BLUNT = process.env.JAMES_BLUNT
+const AVRIL_LAVIGNE = process.env.AVRIL_LAVIGNE
+const ADELE = process.env.ADELE
+const BILLY_JOEL = process.env.BILLY_JOEL
+const BRUNO_MARS = process.env.BRUNO_MARS
+const POP = `${TRACKS_ENDPOINT}${MICHAEL_JACKSON}%2C${JAMES_BLUNT}%2C${AVRIL_LAVIGNE}%2C${ADELE}%2C${BILLY_JOEL}%2C${BRUNO_MARS}`
+// console.log('POP >>>> ', POP)
 
 const authOptions = {
   url: `${TOKEN_ENDPOINT}`,
@@ -266,17 +275,28 @@ app.get(
 request.post(authOptions, function (error, response, body) {
   if (!error && response.statusCode === 200) {
     // use the access token to access the Spotify Web API
-    var token = body.access_token
-    var options = {
-      // url: 'https://api.spotify.com/v1/tracks?ids=2jdAk8ATWIL3dwT47XpRfu%2C5jE48hhRu8E6zBDPRSkEq7%2C612VcBshQcy4mpB2utGc3H%2C0vaLIgHcJM3Fs3jxN9MxPm%2C1mea3bSkSGXuIRvnydlB5b',
+    let token = body.access_token
+    let options_guitar_heroes = {
+      // url: 'https://api.spotify.com/v1/tracks?ids=2jdAk8ATWIL3dwT47XpRfu%2C7utRJ4BeYx85khzP3lKoBX%2C1mea3bSkSGXuIRvnydlB5b%2C40riOy7x9W7GXjyGp4pjAv%2C1Eolhana7nKHYpcYpdVcT5%2C4gFdGHid87z7m5lnLLd2sV',
       url: `${GUITAR_HEROES}`,
-      // url: `${JOHN_MAYER_URL}`,
       headers: {
         Authorization: 'Bearer ' + token,
       },
       json: true,
     }
-    request.get(options, function (error, response, body) {
+
+    let options_pop = {
+      // url:
+      // 'https://api.spotify.com/v1/tracks?ids=5ChkMS8OtdzJeqyybCc9R5%2C0vg4WnUWvze6pBOJDTq99k%2C5xEM5hIgJ1jjgcEBfpkt2F%2C4OSBTYWVwsQhGLF9NHvIbR%2C5zA8vzDGqPl2AzZkEYQGKh%2C6SKwQghsR8AISlxhcwyA9R',
+      url: `${POP}`,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+      json: true,
+    }
+
+    // guitar_heores
+    request.get(options_guitar_heroes, function (error, response, body) {
       const guitar_heroes_result = body['tracks']
       // console.log('guitar_heroes_result >>>> ', guitar_heroes_result)
 
@@ -296,6 +316,30 @@ request.post(authOptions, function (error, response, body) {
         res.status(200)
         res.type('application/json')
         res.send(guitar_heroes_arr)
+      })
+    })
+
+    // pop
+    request.get(options_pop, function (error, response, body) {
+      const pop_result = body['tracks']
+      // console.log('pop_result >>>> ', pop_result)
+
+      let pop_arr = []
+      for (let i = 0; i < pop_result.length; i++) {
+        let obj = {}
+        obj.artist = pop_result[i]['album']['artists'][0]['name']
+        obj.title = pop_result[i]['name']
+        obj.preview = pop_result[i]['preview_url']
+        obj.image = pop_result[i]['album']['images'][1]['url']
+        obj.uri = pop_result[i]['uri']
+        pop_arr.push(obj)
+      }
+      console.log(pop_arr)
+
+      app.get('/pop', (req, res) => {
+        res.status(200)
+        res.type('application/json')
+        res.send(pop_arr)
       })
     })
   }

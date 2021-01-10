@@ -17,7 +17,7 @@ export class AuthService implements CanActivate {
           if (res.status == 200) {
             this.token = res.body.token
           }
-          console.info('response ---> ', res)
+          // console.info('response ---> ', res)
           return true
         })
         .catch(err => {
