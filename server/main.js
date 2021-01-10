@@ -295,6 +295,7 @@ request.post(authOptions, function (error, response, body) {
       json: true,
     }
 
+    // when got time, make a function out of request.get() because repeating code
     // guitar_heores
     request.get(options_guitar_heroes, function (error, response, body) {
       const guitar_heroes_result = body['tracks']
@@ -312,6 +313,7 @@ request.post(authOptions, function (error, response, body) {
       }
       // console.log(guitar_heroes_arr)
 
+      // app.get('/guessthatsong/:genre', (req, res) => {
       app.get('/guitar_heroes', (req, res) => {
         res.status(200)
         res.type('application/json')
