@@ -208,7 +208,7 @@ export class GuitarHeroesComponent implements OnInit {
       if (user_answer_tommy_emmanuel == this.title_tommy_emmanuel) {
         this.score++
       }
-      console.log('SCORE is >>>> ', this.score)
+      console.log('The SCORE is >>>> ', this.score)
 
       this.gameform.reset()
       this.router.navigate(['/score'])

@@ -77,9 +77,6 @@ const authOptions = {
   json: true,
 }
 
-const SQL_GET_USER = `SELECT * FROM users where username=?`
-const getUser = makeSQLQuery(SQL_GET_USER, pool)
-
 const makeAuthMiddleware = (passport) => {
   return (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
@@ -96,6 +93,8 @@ const makeAuthMiddleware = (passport) => {
     })(req, res, next)
   }
 }
+const SQL_GET_USER = `SELECT * FROM users where username=?`
+const getUser = makeSQLQuery(SQL_GET_USER, pool)
 
 passport.use(
   new LocalStrategy(
@@ -177,7 +176,7 @@ app.get('/', (req, res) => {
   res.json({ Hello: 'Kitty' })
 })
 
-const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_key, score, timestamp ) values (?, ?, ?, ?, ?, CURDATE())`
+const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_key, timestamp ) values (?, ?, ?, ?, CURDATE())`
 const registerUsers = makeSQLQuery(SQL_REGISTER_USER, pool)
 
 app.post('/register', express.json(), (req, res) => {
@@ -190,7 +189,7 @@ app.post('/register', express.json(), (req, res) => {
   const image_key = req.body.image_key
   const score = req.body.score
 
-  registerUsers([username, password, email, image_key, score])
+  registerUsers([username, password, email, image_key])
     .then((user) => {
       console.log('Registering user success >>>> ', user)
       res.status(200).json({ Message: 'Success in registering new user' })
@@ -207,6 +206,10 @@ app.post(
   '/login',
   localStrategyAuth, // middleware written above
   (req, res) => {
+    // console.log('REQ >>>>>>', req)
+    // console.log('RES >>>>>>', res)
+
+    const username = req.user.username
     // generate JWT token
     const timestamp = new Date().getTime() / 1000
     const token = jwt.sign(
@@ -218,6 +221,7 @@ app.post(
         data: {
           // your own information can come from database, etc
           loginTime: req.user.loginTime,
+          // username: req.user.username,
           // security: req.user.security,
           // sign: 'linda',
         },
@@ -226,9 +230,56 @@ app.post(
     )
     // console.info(`user: `, req.user) // user is created by passport and give us info
     // generate JWT token
-    res.status(200)
-    res.type('application/json')
-    res.json({ message: `Login at ${new Date()}`, token })
+
+    getUser([username]).then((result) => {
+      if (result.length > 0) {
+        // console.log(result)
+        // console.log(result[0]['user_id'])
+        userId = result[0]['user_id']
+
+        res.status(200)
+        res.type('application/json')
+        // console.log(userId) // can log
+
+        res.json({
+          userId,
+          username,
+          message: `Login at ${new Date()}`,
+          token,
+        })
+      }
+    })
+
+    // getUser([user]).then((result) => {
+    //   // console.log('result ---> ', result) // logging from db
+    //   // console.log('result.length ---> ', result.length) // 1
+    //   if (result.length > 0) {
+    //     const sqlUser = result[0].username
+    //     const sqlPassword = result[0].password
+
+    //     if (user == sqlUser && sha1(password) == sqlPassword) {
+    //       console.log(' >>> Username & PW matches mySQL <<< ')
+    //       done(null, {
+    //         username: user,
+    //         loginTime: new Date().toString(),
+    //       })
+    //       return
+    //     }
+    //     // incorrect login
+    //     done('Incorrect username and password', false)
+    //   }
+    // })
+
+    // res.status(200)
+    // res.type('application/json')
+    // console.log(userId)
+
+    // res.json({
+    //   userId: userId,
+    //   username,
+    //   message: `Login at ${new Date()}`,
+    //   token,
+    // })
   }
 )
 
@@ -381,6 +432,8 @@ app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
       res.status(500).end()
     })
 })
+
+const SQL_UPDATE_SCORE = 'UPDATE users SET score=? where user_id=?;'
 
 pool
   .getConnection()

@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-// import { AuthService } from './auth.service';
+import { Component } from '@angular/core';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +9,13 @@ import { Component, Input } from '@angular/core';
 export class AppComponent {
   title = 'frontend';
 
-  // loggedIn: Boolean = false
+  loggedIn: Boolean = false
 
-  // constructor(private authSvc = AuthService) {}
+  constructor(private authSvc: AuthService) {}
 
   ngOnInit(): void {
 
     // @ts-ignore
-    // console.log(this.authSvc.isUserLoggedIn())
+    // console.log(this.authSvc.isUserLoggedIn()) // always false
   }
 }
