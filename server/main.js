@@ -151,7 +151,7 @@ async function sendMail(user) {
     to: user.email, // possible to send to list of receivers
     subject: 'Congratulations! You are registered 💌 ', // subject line
     html: `<h3>Hello ${user.username}</h3>
-        <p>You can now play GUESS THAT SONG 🎶. All the best!</p>`,
+        <p>You can now play GUESS THAT SONG 🥁🎹🎸. All the best!</p>`,
   }
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -373,7 +373,7 @@ app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
 
   await getOneArtist(artist)
     .then((result) => {
-      console.info(result)
+      // console.info(result)
       res.status(200).json(result)
     })
     .catch((error) => {

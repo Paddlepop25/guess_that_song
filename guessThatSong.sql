@@ -7,6 +7,7 @@ use guessThatSong;
 -- drop tables to restart
 drop table guitar_heroes;
 drop table pop;
+drop table users;
 
 -- create guitar_heroes table and insert columns
 create table IF NOT EXISTS guitar_heroes (
@@ -30,6 +31,18 @@ create table IF NOT EXISTS pop (
         track_option2 varchar(50),
         track_option3 varchar(50),
 		primary key (id)
+);
+
+-- create users table and insert columns
+create table IF NOT EXISTS users (
+		user_id int not null auto_increment,
+        username varchar(50),
+        password varchar(50),
+        email varchar(50),	
+        image_key varchar(128),
+        score int default 0,
+        timestamp datetime,
+		primary key (user_id)
 );
 
 -- guitar_heroes data -- 
@@ -76,19 +89,7 @@ SELECT * FROM pop;
 
 -- values ('', '', '', '', '', '')
 
--- create users table and insert columns
-create table IF NOT EXISTS users (
-		user_id int not null auto_increment,
-        username varchar(50),
-        password varchar(50),
-        email varchar(50),
-        image_key varchar(128),
-        score tinyint(1) default '0',
-        timestamp datetime,
-		primary key (user_id)
-);
-
--- test data -- 
+-- users data -- 
 INSERT into users (username, password, email, image_key, score, timestamp)
 values ('misskay', sha1('misskay'), 'misskay@gmail.com', '1609739308046_cat.jpeg', 0, CURDATE());
 INSERT into users (username, password, email, image_key, score, timestamp)
@@ -98,7 +99,11 @@ values ('wilma', sha1('wilma'), 'wilma@gmail.com', '0804616097393_pup.jpeg', 3, 
 SELECT * FROM guitar_heroes;
 SELECT * FROM guitar_heroes where artist='Jimi Hendrix';
 SELECT * FROM pop;
-SELECT * FROM users;
-SELECT * FROM users where user_id=4;
+SELECT * FROM users;	
+SELECT * FROM users where user_id=2;
+
+-- update user --
+UPDATE users SET score=2 where user_id=3;
+UPDATE users SET score='6' where user_id=3;
 
 
