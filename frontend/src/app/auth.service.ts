@@ -6,6 +6,8 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 export class AuthService implements CanActivate {
   private token = ''
 
+  public userLoggedIn: boolean = false
+
   constructor(private http: HttpClient, private router: Router) { }
     
     login(username, password): Promise<boolean> {
@@ -17,7 +19,8 @@ export class AuthService implements CanActivate {
           if (res.status == 200) {
             this.token = res.body.token
           }
-          // console.info('response ---> ', res)
+          console.info('response ---> ', res)
+          // console.info('token ---> ', this.token)
           return true
         })
         .catch(err => {
@@ -30,12 +33,18 @@ export class AuthService implements CanActivate {
     }
 
     isLogin() {
-      return this.token != '' 
+      this.userLoggedIn = true
+      return this.token != ''
+    }
+
+    isUserLoggedIn() {
+      console.log('this.userLoggedIn >>>> ', this.userLoggedIn)
+      return this.userLoggedIn
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
       if (this.isLogin())
         return true
-      return this.router.parseUrl('/register')
+      return this.router.parseUrl('/register') 
     }
 }

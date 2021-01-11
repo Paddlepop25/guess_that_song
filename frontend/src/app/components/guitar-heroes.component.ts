@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GuessThatSong } from '../guessthatsong.service';
 
 // export interface SongDetails {
@@ -16,7 +17,6 @@ import { GuessThatSong } from '../guessthatsong.service';
 export class GuitarHeroesComponent implements OnInit {
 
   gameform: FormGroup
-
 
   guitar_heroes: [] = []
   // guitarHeroesArray: SongDetails[] = [];
@@ -47,7 +47,7 @@ export class GuitarHeroesComponent implements OnInit {
 
   score: number = 0
 
-  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong) { }
+  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router) { }
   
   ngOnInit(): void {
     // console.log(this.info_tommy_emmanuel)
@@ -209,6 +209,10 @@ export class GuitarHeroesComponent implements OnInit {
         this.score++
       }
       console.log('SCORE is >>>> ', this.score)
+
+      this.gameform.reset()
+      this.router.navigate(['/score'])
+
     }
   }
 

@@ -34,5 +34,6 @@ export class RegisterComponent implements OnInit {
     this.userSvc.registerUser({username, email, password} as User)
 
     this.router.navigate(['/login'])
+    this.registerForm.reset()
   }
 }

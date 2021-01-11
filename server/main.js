@@ -369,7 +369,7 @@ const getOneArtist = makeSQLQuery(SQL_GET_ONE_ARTIST, pool)
 
 app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
   const artist = req.params['artist']
-  console.log('artist >>>> ', artist)
+  // console.log('artist >>>> ', artist)
 
   await getOneArtist(artist)
     .then((result) => {
