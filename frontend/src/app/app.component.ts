@@ -16,6 +16,6 @@ export class AppComponent {
   ngOnInit(): void {
 
     // @ts-ignore
-    // console.log(this.authSvc.isUserLoggedIn()) // always false
+    // console.log(this.authSvc.isUserLoggedIn()) // 
   }
 }

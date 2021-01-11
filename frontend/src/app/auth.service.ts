@@ -17,26 +17,15 @@ export class AuthService implements CanActivate {
         .toPromise()
         .then(res => {
           if (res.status == 200) {
+            // console.info('logged in user info ---> ', res.body)
+            this.userLoggedIn = true
             this.token = res.body.token
-  
-            // var siteName = 'My site'
-            // localStorage.setItem('siteName', siteName)
-            // const localData = localStorage.getItem('siteName')
-            // console.log(localData)
   
             let user = res.body.username
             localStorage.setItem(user, JSON.stringify(res.body))
             const userData = JSON.parse(localStorage.getItem(user))
             console.log('userData >>>> ', userData)
-
           }
-          // console.info('logged in user info ---> ', res.body)
-          /*
-          {userId: 2, 
-          username: "wilma", 
-          message: "Login at Mon Jan 11 2021 19:15:07 GMT+0800 (Singapore Standard Time)", 
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3a…pIn19.1NsXndZacM1oJRwZZX7cOYpyidfQePaoh7sMA62tXw4"}
-            */
           
           // console.info('token ---> ', this.token)
           return true
@@ -51,12 +40,11 @@ export class AuthService implements CanActivate {
     }
 
     isLogin() {
-      this.userLoggedIn = true
       return this.token != ''
     }
 
     isUserLoggedIn() {
-      // console.log('this.userLoggedIn >>>> ', this.userLoggedIn)
+      console.log('this.userLoggedIn >>>> ', this.userLoggedIn)
       return this.userLoggedIn
     }
 

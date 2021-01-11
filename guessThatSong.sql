@@ -8,6 +8,7 @@ use guessThatSong;
 drop table guitar_heroes;
 drop table pop;
 drop table users;
+drop table scores;
 
 -- create guitar_heroes table and insert columns
 create table IF NOT EXISTS guitar_heroes (
@@ -43,6 +44,18 @@ create table IF NOT EXISTS users (
         score int default 0,
         timestamp datetime,
 		primary key (user_id)
+);
+
+create table IF NOT EXISTS scores (
+		score_id int not null auto_increment,
+        genre varchar(50),
+        score int default 0,
+        timestamp datetime,
+        user_id int not null, -- the foreign key, reference to user's user_id
+		primary key (score_id),
+			constraint fk_userId -- can give any name you want, must be unique
+            foreign key(user_id)
+            references users(user_id)
 );
 
 -- guitar_heroes data -- 
@@ -87,19 +100,24 @@ values ('Bruno Mars', 'Marry You', 'spotify:track:6SKwQghsR8AISlxhcwyA9R', 'Gren
 
 SELECT * FROM pop;
 
--- values ('', '', '', '', '', '')
-
 -- users data -- 
 INSERT into users (username, password, email, image_key, score, timestamp)
 values ('misskay', sha1('misskay'), 'misskay@gmail.com', '1609739308046_cat.jpeg', 0, CURDATE());
 INSERT into users (username, password, email, image_key, timestamp)
 values ('wilma', sha1('wilma'), 'wilma@gmail.com', '0804616097393_pup.jpeg', CURDATE());
 
+-- users data -- 
+INSERT into scores (genre, score, timestamp, user_id)
+values ('guitar_heroes', 3, CURDATE(), 1);
+
+-- values ('', '', '', '', '', '')
+
 -- see all rows from tables --
 SELECT * FROM guitar_heroes;
 SELECT * FROM guitar_heroes where artist='Jimi Hendrix';
 SELECT * FROM pop;
 SELECT * FROM users;	
+SELECT * FROM scores;
 SELECT * FROM users where user_id=2;
 
 -- update user --
@@ -110,3 +128,4 @@ UPDATE users SET score=4 where user_id=1;
 -- UPDATE users SET score=4 where username='misskay' Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column.  To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.00025 sec
 -- UPDATE users SET score=4 where username='mimi123' Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column.  To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.00026 sec
 
+SELECT * FROM users where username = 'wilma';
