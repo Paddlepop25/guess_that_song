@@ -310,6 +310,8 @@ app.get(
       const verified = jwt.verify(token, TOKEN_SECRET)
       console.log('verified token --->', verified) // CHECK THIS
       req.token = verified // so next part can get the token
+
+      // the above can put in function to protect rest of the code.
       next()
     } catch (error) {
       res.status(403)

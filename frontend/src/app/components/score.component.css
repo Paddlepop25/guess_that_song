@@ -1,6 +1,11 @@
 h3 {
   text-align: center;
 }
+
+.username {
+  font-size: 5rem;
+}
+
 /* .score {
   outline: 1px dashed red;
 } */

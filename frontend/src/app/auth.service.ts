@@ -1,12 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class AuthService implements CanActivate {
   private token = ''
 
-  public userLoggedIn: boolean = false
+  public userLoggedIn = new Subject();
 
   currentUser: [] = []
 
@@ -23,7 +24,7 @@ export class AuthService implements CanActivate {
 
             let obj = {}
 
-            this.userLoggedIn = true
+            //this.userLoggedIn = true
             this.token = res.body.token
   
             let user = res.body.username
@@ -34,13 +35,16 @@ export class AuthService implements CanActivate {
             // @ts-ignore
             obj.userId = userId
 
-            localStorage.setItem(user, JSON.stringify(res.body))
-            const userData = JSON.parse(localStorage.getItem(user))
+            localStorage.setItem('auth_token', this.token);
+            this.userLoggedIn.next(this.token);
+            // const userData = JSON.parse(localStorage.getItem(user))
             // console.log('userData >>>> ', userData)
             
             // @ts-ignore
             this.currentUser.push(obj)
+            //this.userLoggedIn = true
             // console.log(this.currentUser) // ok
+            //console.log(this.userLoggedIn) // ok
           }
           
           // console.info('token ---> ', this.token)
@@ -54,23 +58,32 @@ export class AuthService implements CanActivate {
           return false
         })
     }
+    
+        // isLogin() {
+        //   return this.token != ''
+        //}
 
     loggedInUser() {
       return this.currentUser
     }
 
-    isLogin() {
-      return this.token != ''
+    isUserLoggedIn() {
+      //console.log('this.userLoggedIn >>>> ', this.userLoggedIn) // false
+      let authToken = localStorage.getItem('auth_token')
+      return (authToken != null ? true: false)
     }
 
-    isUserLoggedIn() {
-      console.log('this.userLoggedIn >>>> ', this.userLoggedIn)
-      return this.userLoggedIn
+    logout() {
+      localStorage.removeItem('auth_token')
+      this.userLoggedIn.next();
+      this.userLoggedIn.complete();
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-      if (this.isLogin())
+      console.log(this.isUserLoggedIn())
+      if (this.isUserLoggedIn())
         return true
+        
       return this.router.parseUrl('/login') 
     }
 }
