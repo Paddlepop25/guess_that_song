@@ -15,9 +15,11 @@
     >
       Logout
     </button>
-    <button 
-    *ngIf="!authTokenUserid"
-    class="btn btn-outline-warning mr-3" [routerLink]="['/register']">
+    <button
+      *ngIf="!authTokenUserid"
+      class="btn btn-outline-warning mr-3"
+      [routerLink]="['/register']"
+    >
       Register
     </button>
     <button

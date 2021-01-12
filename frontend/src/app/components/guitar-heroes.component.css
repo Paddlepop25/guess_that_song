@@ -20,7 +20,7 @@ h1 {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   /* height: 720px; */
 }
-
+/* 
 .titles button {
   width: 100%;
   position: relative;
@@ -32,10 +32,18 @@ h1 {
   width: 90%;
   position: relative;
   top: -2rem;
-}
+} */
 
+.card-body {
+  height: 10rem;
+}
 .radio-toolbar {
   margin: 10px;
+}
+
+label {
+  width: 16.6rem;
+  text-align: center;
 }
 
 .radio-toolbar input[type="radio"] {
@@ -50,19 +58,23 @@ h1 {
   padding: 10px 20px;
   font-family: sans-serif, Arial;
   font-size: 16px;
-  border: 2px solid #444;
+  border: 2px solid rgb(83, 52, 0);
   border-radius: 4px;
 }
 
 .radio-toolbar label:hover {
-  background-color: #dfd;
+  background-color: rgb(255, 247, 221);
 }
 
 .radio-toolbar input[type="radio"]:focus + label {
-  border: 2px dashed #444;
+  border: 2px dashed rgb(68, 68, 68);
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
-  background-color: #bfb;
-  border-color: #4c4;
+  background-color: rgb(255, 240, 187);
+  border-color: rgb(204, 154, 68);
+}
+
+.scoreBtn {
+  text-align: center;
 }

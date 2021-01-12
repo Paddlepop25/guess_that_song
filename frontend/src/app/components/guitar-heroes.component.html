@@ -27,7 +27,6 @@
                 id="trackOption1JohnMayer"
                 formControlName="answer_john_mayer"
                 value="{{ track.track_option1 }}"
-                checked
               />
               <label for="trackOption1JohnMayer">{{
                 track.track_option1
@@ -308,7 +307,7 @@
                 value="{{ track.track_option1 }}"
                 checked
               />
-              <label for="trackOption1TommyEmmanuel">{{
+              <label for="trackOption1TommyEmmanuel" class="track1">{{
                 track.track_option1
               }}</label>
 
@@ -318,7 +317,7 @@
                 formControlName="answer_tommy_emmanuel"
                 value="{{ track.track_option2 }}"
               />
-              <label for="trackOption2TommyEmmanuel">{{
+              <label for="trackOption2TommyEmmanuel" class="track2">{{
                 track.track_option2
               }}</label>
 
@@ -328,7 +327,7 @@
                 formControlName="answer_tommy_emmanuel"
                 value="{{ track.track_option3 }}"
               />
-              <label for="trackOption3TommyEmmanuel">{{
+              <label for="trackOption3TommyEmmanuel" class="track3">{{
                 track.track_option3
               }}</label>
             </div>
@@ -336,49 +335,13 @@
         </div>
       </div>
     </div>
-
-    <!-- row -->
   </div>
-  <button class="btn btn-danger" (click)="onSubmit()">See My Score ✅</button>
 </div>
 
-<!-- OLDWAY -->
-<!-- <h1>Guitar Heroes</h1>
 <div class="row">
-  <div *ngFor="let song of guitar_heroes" class="guitar_heroes">
-    <div class="col col-lg-4">
-      <div class="card mt-4 mb-4" style="width: 18rem">
-        <img src="{{ song.image }}" class="card-img-top" alt="not available" />
-        <div class="card-body">
-          <h4 class="card-title">{{ song.artist }}</h4>
-          <video controls="" name="media">
-            <source src="{{ song.preview }}" type="audio/mpeg" />
-          </video>
-        </div>
-        <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button>
-        <div *ngFor="let track of track_options_john_mayer">
-          {{ track.track_option1 }}
-          {{ track.track_option2 }}
-          {{ track.track_option3 }}
-        </div>
-      </div>
-    </div>
+  <div class="col scoreBtn">
+    <button class="btn btn-danger btn-lg" (click)="onSubmit()">
+      See My Score ✅
+    </button>
   </div>
-</div> -->
-
-<!-- not working: display randomised titles -->
-<!-- <div
-            class="titles"
-            *ngFor="let g of guitarHeroesArray; let i = index"
-          > -->
-<!-- <button type="button" class="{{ g.class }}">{{ g.title }}</button> -->
-<!-- </div> -->
-
-<!-- 
-  artist: "Coldplay"
-  image: "https://i.scdn.co/image/ab67616d00001e02e21cc1db05580b6f2d2a3b6e"
-  preview: "https://p.scdn.co/mp3-preview/ceb88eddfa4bac6be64e90606741ebedf8501893?cid=f7b4d44f9119479aabe5847141835e89"
-  title: "Viva La Vida"
-  uri: "spotify:track:1mea3bSkSGXuIRvnydlB5b" -->
+</div>
