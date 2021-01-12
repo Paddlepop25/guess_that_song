@@ -71,6 +71,6 @@ export class AuthService implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
       if (this.isLogin())
         return true
-      return this.router.parseUrl('/register') 
+      return this.router.parseUrl('/login') 
     }
 }

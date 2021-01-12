@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { GuessThatSong } from '../guessthatsong.service';
+import { Score } from '../score.model';
 
 // export interface SongDetails {
 //   title: string;
@@ -218,16 +219,15 @@ export class GuitarHeroesComponent implements OnInit {
       // @ts-ignore
       const username = currentUser[0]['username']
       // @ts-ignore
-      const userId = currentUser[0]['userId']
-      const score = this.score
-      const genre = 'guitar_heroes'
+      const user_id = currentUser[0]['userId'] // num
+      const score = this.score // num 
+      const genre = 'guitar_heroes' // str
+      // const timestamp = new Date().toString() // its datetime in mySQL
 
-      console.log(username, userId)
-
-      // this.activatedRoute.snapshot.params
-      // this.router.navigate(['/score'])
-      // scores table has genre, score, timestamp, user_id (foreign key)
+      // this.router.navigate(['/guessthatsong'])
       // navigate target: http://localhost:3000/score?genre=guitar_heroes&user_id=4&score=2
+
+      this.guessThatSongSvc.insertScore({user_id, score, genre} as Score)
 
     }
   }

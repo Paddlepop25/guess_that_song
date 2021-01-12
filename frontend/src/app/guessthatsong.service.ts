@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Score } from "./score.model";
 
 // export interface SongDetails {
 //   title: string;
@@ -63,5 +64,14 @@ import { Injectable } from "@angular/core";
     })
   // console.log('getPop >>> ', result[0]['title'])
   return result
+  }
+
+  async insertScore(score: Score): Promise<any> {
+    const result = await this.http.post('http://localhost:3000/score', score)
+    .toPromise()
+    .catch((error: HttpErrorResponse) => {
+      console.error('ERROR in inserting score', error)
+    })
+    return result
   }
  }

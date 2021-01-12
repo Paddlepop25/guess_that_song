@@ -439,7 +439,7 @@ const SQL_INSERT_SCORE = `INSERT into scores (genre, score, timestamp, user_id)
 values (?, ?, CURDATE(), ?);`
 const insertScoreGuitarHeores = makeSQLQuery(SQL_INSERT_SCORE, pool)
 
-app.post('/score/guitarheroes', (req, res) => {
+app.post('/score', (req, res) => {
   console.log(req.body) // { genre: 'pop', score: 1, user_id: 3 }
   const genre = req.body.genre
   const score = req.body.score
