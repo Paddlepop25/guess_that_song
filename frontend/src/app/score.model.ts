@@ -4,4 +4,5 @@ export interface Score {
   score: number;
   timestamp?: string;
   user_id: number
+  username: string;
 }

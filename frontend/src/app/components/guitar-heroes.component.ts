@@ -214,18 +214,18 @@ export class GuitarHeroesComponent implements OnInit {
       
       const currentUser = this.authSvc.loggedInUser()
       // console.log(currentUser)
-      // @ts-ignore
-      // const username = currentUser[0]['username']
+      const genre = 'guitar_heroes' // str
       // @ts-ignore
       const user_id = currentUser[0]['userId'] // num
+      // @ts-ignore
+      const username = currentUser[0]['username']
       const score = this.score // num 
-      const genre = 'guitar_heroes' // str
       // const timestamp = new Date().toString() // its datetime in mySQL
       
-      this.guessThatSongSvc.insertScore({user_id, score, genre} as Score)
-
-      // target: http://localhost:3000/score?genre=guitar_heroes&user_id=4&score=2
-      this.router.navigate(['/score'], { queryParams: { genre: genre, user_id: user_id, score: score } });
+      this.guessThatSongSvc.insertScore({genre, user_id, username, score} as Score)
+      
+      // http://localhost:4200/score?genre=guitar_heroes&user_id=4&username=fred123&score=3
+      this.router.navigate(['/score'], { queryParams: { genre: genre, user_id: user_id, username: username, score: score } });
       
     }
   }

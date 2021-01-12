@@ -37,7 +37,7 @@ const appRoutes: Routes = [
   },
   { 
     path: 'score', component: ScoreComponent,
-    canActivate : [ AuthService ]  // guard this component if not logged in
+    // canActivate : [ AuthService ]  // guard this component if not logged in
   },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
