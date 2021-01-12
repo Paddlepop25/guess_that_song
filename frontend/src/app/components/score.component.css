@@ -2,10 +2,14 @@ h3 {
   text-align: center;
 }
 
-.username {
-  font-size: 5rem;
+span {
+  font-size: 2rem;
 }
 
-/* .score {
-  outline: 1px dashed red;
-} */
+code {
+  font-size: 1.3rem;
+}
+
+.card-body {
+  padding: 4rem;
+}

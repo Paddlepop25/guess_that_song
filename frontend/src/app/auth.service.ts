@@ -24,7 +24,6 @@ export class AuthService implements CanActivate {
 
             let obj = {}
 
-            //this.userLoggedIn = true
             this.token = res.body.token
   
             let user = res.body.username
@@ -42,11 +41,9 @@ export class AuthService implements CanActivate {
             
             // @ts-ignore
             this.currentUser.push(obj)
-            //this.userLoggedIn = true
             // console.log(this.currentUser) // ok
-            //console.log(this.userLoggedIn) // ok
+            // console.log(this.userLoggedIn) // ok
           }
-          
           // console.info('token ---> ', this.token)
           return true
         })
@@ -80,7 +77,7 @@ export class AuthService implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-      console.log(this.isUserLoggedIn())
+      // console.log(this.isUserLoggedIn())
       if (this.isUserLoggedIn())
         return true
         

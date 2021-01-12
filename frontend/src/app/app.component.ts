@@ -10,31 +10,27 @@ import { AuthService } from './auth.service';
 export class AppComponent {
   title = 'frontend';
 
-  //loggedIn: Boolean = false
   public authTokenUserid: boolean;
 
   constructor(private authSvc: AuthService, private router: Router) {
     this.authSvc.userLoggedIn.subscribe((token) => {
-      if(token != null) {
+      if (token != null) {
         this.authTokenUserid = true;
-      }else{
+      } else {
         this.authTokenUserid = false;
       } 
-    });
+    })
   }
 
   ngOnInit(): void {
-    console.log('ngInit');
-    //this.authSvc.userLoggedIn.subscribe(token=> this.authTokenUserid = token);
-    if(this.authSvc.isUserLoggedIn()) {
-      this.authTokenUserid = true;
-    }else{
-      this.authTokenUserid = false;
+    // console.log('ngInit');
+    if (this.authSvc.isUserLoggedIn()) {
+      this.authTokenUserid = true
+    } else {
+      this.authTokenUserid = false
     }
-    console.log(this.authTokenUserid)
-    console.log(this.authSvc.isUserLoggedIn()) // false
-
-    // event emitter , subscribe to subject
+    // console.log(this.authTokenUserid) // true after hit page refresh
+    // console.log(this.authSvc.isUserLoggedIn()) // true after hit page refresh
   }
 
   onLogout() {
@@ -42,28 +38,3 @@ export class AppComponent {
     this.router.navigate(['/login'])
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * game.service
- * 
- * event = new Subject<>
- * 
- * this.event.next()
- * day35
- * 
- * listen to this
- */

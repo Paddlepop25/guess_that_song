@@ -223,10 +223,9 @@ export class GuitarHeroesComponent implements OnInit {
       // const timestamp = new Date().toString() // its datetime in mySQL
       
       this.guessThatSongSvc.insertScore({genre, user_id, username, score} as Score)
-      
+
       // http://localhost:4200/score?genre=guitar_heroes&user_id=4&username=fred123&score=3
       this.router.navigate(['/score'], { queryParams: { genre: genre, user_id: user_id, username: username, score: score } });
-      
     }
   }
 

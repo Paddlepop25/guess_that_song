@@ -1,5 +1,5 @@
-<!-- <div class="score mt-5">
-  <h3>Congratulations! 🥳</h3>
+<div class="mt-5">
+  <h3>🥳 Congratulations 🎊</h3>
   <div class="card mt-4 mb-3">
     <div class="row no-gutters">
       <div class="col-md-4">
@@ -11,13 +11,23 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title">Well done <div class="username">{{ username }}!</h5></div>
+          <h5 class="card-title">
+            Well done <span>{{ username }}!</span>
+          </h5>
           <p class="card-text">
-            For playing {{ genre }}, you score a total of {{ score }}/6 points
-            which is {{ percentage }}%
+            For playing <code>{{ genre }}</code
+            >,
+            <br />
+            you score a total of <code>{{ score }}/6</code> points which is
+            <code>{{ percentage }}%</code>.
+          </p>
+          <p class="card-text">
+            <small class="text-muted">Last updated 3 mins ago</small>
           </p>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+
+<!-- http://localhost:4200/score?genre=guitar_heroes&user_id=4&username=fred123&score=1 -->
