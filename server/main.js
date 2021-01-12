@@ -416,14 +416,36 @@ request.post(authOptions, function (error, response, body) {
 //     })
 // })
 
-const SQL_GET_ONE_ARTIST = 'SELECT * FROM guitar_heroes WHERE artist=?'
-const getOneArtist = makeSQLQuery(SQL_GET_ONE_ARTIST, pool)
+const SQL_GET_ONE_ARTIST_GUITAR_HEROES =
+  'SELECT * FROM guitar_heroes WHERE artist=?'
+const getOneArtistGuitarHeroes = makeSQLQuery(
+  SQL_GET_ONE_ARTIST_GUITAR_HEROES,
+  pool
+)
 
 app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
   const artist = req.params['artist']
   // console.log('artist >>>> ', artist)
 
-  await getOneArtist(artist)
+  await getOneArtistGuitarHeroes(artist)
+    .then((result) => {
+      // console.info(result)
+      res.status(200).json(result)
+    })
+    .catch((error) => {
+      console.error('Error in reading from SQL >>> ', error)
+      res.status(500).end()
+    })
+})
+
+const SQL_GET_ONE_ARTIST_POP = 'SELECT * FROM pop WHERE artist=?'
+const getOneArtistPop = makeSQLQuery(SQL_GET_ONE_ARTIST_POP, pool)
+
+app.get('/guessthatsong/pop/:artist', async (req, res) => {
+  const artist = req.params['artist']
+  // console.log('artist >>>> ', artist)
+
+  await getOneArtistPop(artist)
     .then((result) => {
       // console.info(result)
       res.status(200).json(result)

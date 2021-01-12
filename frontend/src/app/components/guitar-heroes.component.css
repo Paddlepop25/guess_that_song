@@ -3,7 +3,6 @@ video {
   height: 7.5rem;
   position: relative;
   top: -55px;
-  /* border: 1px dashed red; */
 }
 
 h1 {
@@ -18,21 +17,7 @@ h1 {
 .card {
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  /* height: 720px; */
 }
-/* 
-.titles button {
-  width: 100%;
-  position: relative;
-  top: -2rem;
-}
-
-.song_title {
-  margin: 0 auto;
-  width: 90%;
-  position: relative;
-  top: -2rem;
-} */
 
 .card-body {
   height: 10rem;
@@ -54,7 +39,7 @@ label {
 
 .radio-toolbar label {
   display: inline-block;
-  background-color: #ddd;
+  background-color: rgb(255, 246, 230);
   padding: 10px 20px;
   font-family: sans-serif, Arial;
   font-size: 16px;
@@ -63,7 +48,7 @@ label {
 }
 
 .radio-toolbar label:hover {
-  background-color: rgb(255, 247, 221);
+  background-color: rgb(255, 234, 165);
 }
 
 .radio-toolbar input[type="radio"]:focus + label {

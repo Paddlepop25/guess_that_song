@@ -66,6 +66,16 @@ import { Score } from "./score.model";
   return result
   }
 
+  async getPopArtist(artist): Promise<any> {
+    const result = await this.http.get<any>(`http://localhost:3000/guessthatsong/pop/${artist}`)
+    .toPromise()
+    .catch((error: HttpErrorResponse) => {
+      console.log('HttpError ---> ', error)
+    })
+  // console.log('getPop >>> ', result) // ok
+  return result
+  }
+
   async insertScore(score: Score): Promise<any> {
     console.log('SCORE >>>> ', score['score'])
     console.log('GENRE >>>> ', score.genre)

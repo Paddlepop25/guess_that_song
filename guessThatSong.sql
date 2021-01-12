@@ -119,8 +119,17 @@ values ('guitar_heroes', 6, CURDATE(), 2);
 SELECT * FROM guitar_heroes;
 SELECT * FROM guitar_heroes where artist='Jimi Hendrix';
 SELECT * FROM pop;
+SELECT * FROM pop WHERE artist='Michael Jackson';
 SELECT * FROM users;	
+SELECT * FROM users where user_id=2;	
+SELECT * FROM users where username='wilma';
 SELECT * FROM scores;
-SELECT * FROM users where user_id=2;
 
-SELECT * FROM users where username = 'wilma';
+
+
+
+
+
+
+
+

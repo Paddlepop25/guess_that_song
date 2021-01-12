@@ -1,36 +1,308 @@
 <h1>Pop</h1>
-<div class="row">
-  <div *ngFor="let song of pop" class="pop">
-    <div class="col col-lg-4">
-      <div class="card mt-4 mb-4" style="width: 18rem">
-        <img src="{{ song.image }}" class="card-img-top" alt="not available" />
-        <div class="card-body">
-          <h4 class="card-title">{{ song.artist }}</h4>
-          <video controls="" name="media">
-            <source src="{{ song.preview }}" type="audio/mpeg" />
-          </video>
+<div [formGroup]="popform">
+  <div class="row">
+    <!-- Michael Jackson -->
+    <div *ngFor="let song of info_michael_jackson" class="guitar_heroes">
+      <div class="col col-lg-4">
+        <div class="card mt-4 mb-4" style="width: 18rem">
+          <img
+            src="{{ song.image }}"
+            class="card-img-top"
+            alt="not available"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ song.artist }}</h4>
+            <video controls="" name="media">
+              <source src="{{ song.preview }}" type="audio/mpeg" />
+            </video>
+          </div>
 
-          <!-- not working: display randomised titles -->
-          <div
-            class="titles"
-            *ngFor="let g of guitarHeroesArray; let i = index"
-          >
-            <!-- <button type="button" class="{{ g.class }}">{{ g.title }}</button> -->
+          <div *ngFor="let track of track_options_michael_jackson">
+            <div class="radio-toolbar">
+              <input
+                type="radio"
+                id="trackOption1MJ"
+                formControlName="answer_michael_jackson"
+                value="{{ track.track_option1 }}"
+              />
+              <label for="trackOption1MJ">{{ track.track_option1 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption2MJ"
+                formControlName="answer_michael_jackson"
+                value="{{ track.track_option2 }}"
+              />
+              <label for="trackOption2MJ">{{ track.track_option2 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption3MJ"
+                formControlName="answer_michael_jackson"
+                value="{{ track.track_option3 }}"
+              />
+              <label for="trackOption3MJ">{{ track.track_option3 }}</label>
+            </div>
           </div>
         </div>
-        <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button>
+      </div>
+    </div>
+
+    <!-- James Blunt -->
+    <div *ngFor="let song of info_james_blunt" class="guitar_heroes">
+      <div class="col col-lg-4">
+        <div class="card mt-4 mb-4" style="width: 18rem">
+          <img
+            src="{{ song.image }}"
+            class="card-img-top"
+            alt="not available"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ song.artist }}</h4>
+            <video controls="" name="media">
+              <source src="{{ song.preview }}" type="audio/mpeg" />
+            </video>
+          </div>
+
+          <div *ngFor="let track of track_options_james_blunt">
+            <div class="radio-toolbar">
+              <input
+                type="radio"
+                id="trackOption1JB"
+                formControlName="answer_james_blunt"
+                value="{{ track.track_option1 }}"
+                checked
+              />
+              <label for="trackOption1JB">{{ track.track_option1 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption2JB"
+                formControlName="answer_james_blunt"
+                value="{{ track.track_option2 }}"
+              />
+              <label for="trackOption2JB">{{ track.track_option2 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption3JB"
+                formControlName="answer_james_blunt"
+                value="{{ track.track_option3 }}"
+              />
+              <label for="trackOption3JB">{{ track.track_option3 }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avril Lavigne -->
+    <div *ngFor="let song of info_avril_lavigne" class="guitar_heroes">
+      <div class="col col-lg-4">
+        <div class="card mt-4 mb-4" style="width: 18rem">
+          <img
+            src="{{ song.image }}"
+            class="card-img-top"
+            alt="not available"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ song.artist }}</h4>
+            <video controls="" name="media">
+              <source src="{{ song.preview }}" type="audio/mpeg" />
+            </video>
+          </div>
+
+          <div *ngFor="let track of track_options_avril_lavigne">
+            <div class="radio-toolbar">
+              <input
+                type="radio"
+                id="trackOption1Avril"
+                formControlName="answer_avril_lavigne"
+                value="{{ track.track_option1 }}"
+                checked
+              />
+              <label for="trackOption1Avril">{{ track.track_option1 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption2Avril"
+                formControlName="answer_avril_lavigne"
+                value="{{ track.track_option2 }}"
+              />
+              <label for="trackOption2Avril">{{ track.track_option2 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption3Avril"
+                formControlName="answer_avril_lavigne"
+                value="{{ track.track_option3 }}"
+              />
+              <label for="trackOption3Avril">{{ track.track_option3 }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adele -->
+    <div *ngFor="let song of info_adele" class="guitar_heroes">
+      <div class="col col-lg-4">
+        <div class="card mt-4 mb-4" style="width: 18rem">
+          <img
+            src="{{ song.image }}"
+            class="card-img-top"
+            alt="not available"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ song.artist }}</h4>
+            <video controls="" name="media">
+              <source src="{{ song.preview }}" type="audio/mpeg" />
+            </video>
+          </div>
+
+          <div *ngFor="let track of track_options_adele">
+            <div class="radio-toolbar">
+              <input
+                type="radio"
+                id="trackOption1Adele"
+                formControlName="answer_adele"
+                value="{{ track.track_option1 }}"
+                checked
+              />
+              <label for="trackOption1Adele">{{ track.track_option1 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption2Adele"
+                formControlName="answer_adele"
+                value="{{ track.track_option2 }}"
+              />
+              <label for="trackOption2Adele">{{ track.track_option2 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption3Adele"
+                formControlName="answer_adele"
+                value="{{ track.track_option3 }}"
+              />
+              <label for="trackOption3Adele">{{ track.track_option3 }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billy Joel -->
+    <div *ngFor="let song of info_billy_joel" class="guitar_heroes">
+      <div class="col col-lg-4">
+        <div class="card mt-4 mb-4" style="width: 18rem">
+          <img
+            src="{{ song.image }}"
+            class="card-img-top"
+            alt="not available"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ song.artist }}</h4>
+            <video controls="" name="media">
+              <source src="{{ song.preview }}" type="audio/mpeg" />
+            </video>
+          </div>
+
+          <div *ngFor="let track of track_options_billy_joel">
+            <div class="radio-toolbar">
+              <input
+                type="radio"
+                id="trackOption1BJ"
+                formControlName="answer_billy_joel"
+                value="{{ track.track_option1 }}"
+                checked
+              />
+              <label for="trackOption1BJ">{{ track.track_option1 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption2BJ"
+                formControlName="answer_billy_joel"
+                value="{{ track.track_option2 }}"
+              />
+              <label for="trackOption2BJ">{{ track.track_option2 }}</label>
+
+              <input
+                type="radio"
+                id="trackOption3BJ"
+                formControlName="answer_billy_joel"
+                value="{{ track.track_option3 }}"
+              />
+              <label for="trackOption3BJ">{{ track.track_option3 }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bruno Mars -->
+    <div *ngFor="let song of info_bruno_mars" class="guitar_heroes">
+      <div class="col col-lg-4">
+        <div class="card mt-4 mb-4" style="width: 18rem">
+          <img
+            src="{{ song.image }}"
+            class="card-img-top"
+            alt="not available"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ song.artist }}</h4>
+            <video controls="" name="media">
+              <source src="{{ song.preview }}" type="audio/mpeg" />
+            </video>
+          </div>
+          <!-- <button class="song_title btn btn-warning mb-2">a</button>
+          <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
+          <button class="song_title btn btn-dark">c</button> -->
+
+          <div *ngFor="let track of track_options_bruno_mars">
+            <div class="radio-toolbar">
+              <input
+                type="radio"
+                id="trackOption1BM"
+                formControlName="answer_bruno_mars"
+                value="{{ track.track_option1 }}"
+                checked
+              />
+              <label for="trackOption1BM" class="track1">{{
+                track.track_option1
+              }}</label>
+
+              <input
+                type="radio"
+                id="trackOption2BM"
+                formControlName="answer_bruno_mars"
+                value="{{ track.track_option2 }}"
+              />
+              <label for="trackOption2BM" class="track2">{{
+                track.track_option2
+              }}</label>
+
+              <input
+                type="radio"
+                id="trackOption3BM"
+                formControlName="answer_bruno_mars"
+                value="{{ track.track_option3 }}"
+              />
+              <label for="trackOption3BM" class="track3">{{
+                track.track_option3
+              }}</label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 
-{
-  artist: 'Michael Jackson',
-  title: 'Billie Jean',
-  preview: 'https://p.scdn.co/mp3-preview/f504e6b8e037771318656394f532dede4f9bcaea?cid=f7b4d44f9119479aabe5847141835e89',
-  image: 'https://i.scdn.co/image/ab67616d00001e024121faee8df82c526cbab2be',
-  uri: 'spotify:track:5ChkMS8OtdzJeqyybCc9R5'
-}, -->
+<div class="row">
+  <div class="col scoreBtn">
+    <button class="btn btn-danger btn-lg" (click)="onSubmit()">
+      See My Score ✅
+    </button>
+  </div>
+</div>

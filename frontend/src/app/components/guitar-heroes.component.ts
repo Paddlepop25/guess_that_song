@@ -5,11 +5,6 @@ import { AuthService } from '../auth.service';
 import { GuessThatSong } from '../guessthatsong.service';
 import { Score } from '../score.model';
 
-// export interface SongDetails {
-//   title: string;
-//   class: string;
-// }
-
 @Component({
   selector: 'app-guitar-heroes',
   templateUrl: './guitar-heroes.component.html',
