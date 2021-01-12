@@ -106,10 +106,13 @@ values ('misskay', sha1('misskay'), 'misskay@gmail.com', '1609739308046_cat.jpeg
 INSERT into users (username, password, email, image_key, timestamp)
 values ('wilma', sha1('wilma'), 'wilma@gmail.com', '0804616097393_pup.jpeg', CURDATE());
 
--- users data -- 
+-- scores data -- 
 INSERT into scores (genre, score, timestamp, user_id)
 values ('guitar_heroes', 3, CURDATE(), 1);
-
+INSERT into scores (genre, score, timestamp, user_id)
+values ('pop', 2, CURDATE(), 4);
+INSERT into scores (genre, score, timestamp, user_id)
+values ('guitar_heroes', 6, CURDATE(), 2);
 -- values ('', '', '', '', '', '')
 
 -- see all rows from tables --
@@ -119,13 +122,5 @@ SELECT * FROM pop;
 SELECT * FROM users;	
 SELECT * FROM scores;
 SELECT * FROM users where user_id=2;
-
--- update user --
--- UPDATE users SET score=4 where username='misskay';
-UPDATE users SET score=4 where username='mimi123';
-UPDATE users SET score=4 where user_id=1;
-
--- UPDATE users SET score=4 where username='misskay' Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column.  To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.00025 sec
--- UPDATE users SET score=4 where username='mimi123' Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column.  To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.00026 sec
 
 SELECT * FROM users where username = 'wilma';

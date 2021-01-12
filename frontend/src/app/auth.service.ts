@@ -8,6 +8,8 @@ export class AuthService implements CanActivate {
 
   public userLoggedIn: boolean = false
 
+  currentUser: [] = []
+
   constructor(private http: HttpClient, private router: Router) { }
     
     login(username, password): Promise<boolean> {
@@ -18,13 +20,27 @@ export class AuthService implements CanActivate {
         .then(res => {
           if (res.status == 200) {
             // console.info('logged in user info ---> ', res.body)
+
+            let obj = {}
+
             this.userLoggedIn = true
             this.token = res.body.token
   
             let user = res.body.username
+            let userId = res.body.userId
+
+            // @ts-ignore
+            obj.username = user
+            // @ts-ignore
+            obj.userId = userId
+
             localStorage.setItem(user, JSON.stringify(res.body))
             const userData = JSON.parse(localStorage.getItem(user))
-            console.log('userData >>>> ', userData)
+            // console.log('userData >>>> ', userData)
+            
+            // @ts-ignore
+            this.currentUser.push(obj)
+            // console.log(this.currentUser) // ok
           }
           
           // console.info('token ---> ', this.token)
@@ -37,6 +53,10 @@ export class AuthService implements CanActivate {
           }
           return false
         })
+    }
+
+    loggedInUser() {
+      return this.currentUser
     }
 
     isLogin() {

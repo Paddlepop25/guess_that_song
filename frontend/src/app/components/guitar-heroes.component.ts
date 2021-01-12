@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { GuessThatSong } from '../guessthatsong.service';
 
 // export interface SongDetails {
@@ -47,7 +48,7 @@ export class GuitarHeroesComponent implements OnInit {
 
   score: number = 0
 
-  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router) { }
+  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private activatedRoute: ActivatedRoute, private authSvc: AuthService) { }
   
   ngOnInit(): void {
     // console.log(this.info_tommy_emmanuel)
@@ -210,8 +211,23 @@ export class GuitarHeroesComponent implements OnInit {
       }
       console.log('The SCORE is >>>> ', this.score)
 
-      this.gameform.reset()
-      this.router.navigate(['/score'])
+      // this.gameform.reset()
+      
+      const currentUser = this.authSvc.loggedInUser()
+      // console.log(currentUser)
+      // @ts-ignore
+      const username = currentUser[0]['username']
+      // @ts-ignore
+      const userId = currentUser[0]['userId']
+      const score = this.score
+      const genre = 'guitar_heroes'
+
+      console.log(username, userId)
+
+      // this.activatedRoute.snapshot.params
+      // this.router.navigate(['/score'])
+      // scores table has genre, score, timestamp, user_id (foreign key)
+      // navigate target: http://localhost:3000/score?genre=guitar_heroes&user_id=4&score=2
 
     }
   }

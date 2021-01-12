@@ -414,7 +414,6 @@ request.post(authOptions, function (error, response, body) {
 //     })
 // })
 
-// SELECT * FROM guitar_heroes where artist='Jimi Hendrix';
 const SQL_GET_ONE_ARTIST = 'SELECT * FROM guitar_heroes WHERE artist=?'
 const getOneArtist = makeSQLQuery(SQL_GET_ONE_ARTIST, pool)
 
@@ -433,7 +432,29 @@ app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
     })
 })
 
-const SQL_UPDATE_SCORE = 'UPDATE users SET score=? where user_id=?;'
+// score for guitar_heroes game
+// INSERT into scores (genre, score, timestamp, user_id)
+// values ('guitar_heroes', 6, CURDATE(), 2);
+const SQL_INSERT_SCORE = `INSERT into scores (genre, score, timestamp, user_id)
+values (?, ?, CURDATE(), ?);`
+const insertScoreGuitarHeores = makeSQLQuery(SQL_INSERT_SCORE, pool)
+
+app.post('/score/guitarheroes', (req, res) => {
+  console.log(req.body) // { genre: 'pop', score: 1, user_id: 3 }
+  const genre = req.body.genre
+  const score = req.body.score
+  const user_id = req.body.user_id
+
+  insertScoreGuitarHeores([genre, score, user_id])
+    .then((score) => {
+      console.log('SCORE added to database >>>> ', score)
+      res.status(200).json({ Message: 'Score added' })
+    })
+    .catch((error) => {
+      console.error('ERROR in adding score to database >>>> ', error)
+      res.status(500).json({ 'ERROR in adding score': error })
+    })
+})
 
 pool
   .getConnection()

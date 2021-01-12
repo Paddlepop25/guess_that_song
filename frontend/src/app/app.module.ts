@@ -23,6 +23,7 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { 
+    
     path: 'guessthatsong', component: GuessthatsongComponent,  
     canActivate : [ AuthService ]  // guard this component if not logged in
   },
