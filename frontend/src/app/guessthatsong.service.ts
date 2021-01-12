@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Score } from "./score.model";
 
@@ -67,6 +67,18 @@ import { Score } from "./score.model";
   }
 
   async insertScore(score: Score): Promise<any> {
+    console.log('SCORE >>>> ', score['score'])
+    console.log('GENRE >>>> ', score.genre)
+    console.log('USERID >>>> ', score['user_id'])
+
+    // user_id: 3, score: 3, genre: "guitar_heroes"}
+    // genre: "guitar_heroes"
+    // score: 3
+    // user_id: 3
+
+    // const params = new HttpParams()
+      // .set('')
+
     const result = await this.http.post('http://localhost:3000/score', score)
     .toPromise()
     .catch((error: HttpErrorResponse) => {

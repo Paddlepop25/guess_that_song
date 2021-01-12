@@ -45,8 +45,6 @@ export class GuitarHeroesComponent implements OnInit {
   title_jimi_hendrix: [] = []
   title_tommy_emmanuel: [] = []
 
-  track_options_test = ["a", "b", "c"]
-
   score: number = 0
 
   constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private activatedRoute: ActivatedRoute, private authSvc: AuthService) { }
@@ -212,23 +210,23 @@ export class GuitarHeroesComponent implements OnInit {
       }
       console.log('The SCORE is >>>> ', this.score)
 
-      // this.gameform.reset()
+      this.gameform.reset()
       
       const currentUser = this.authSvc.loggedInUser()
       // console.log(currentUser)
       // @ts-ignore
-      const username = currentUser[0]['username']
+      // const username = currentUser[0]['username']
       // @ts-ignore
       const user_id = currentUser[0]['userId'] // num
       const score = this.score // num 
       const genre = 'guitar_heroes' // str
       // const timestamp = new Date().toString() // its datetime in mySQL
-
-      // this.router.navigate(['/guessthatsong'])
-      // navigate target: http://localhost:3000/score?genre=guitar_heroes&user_id=4&score=2
-
+      
       this.guessThatSongSvc.insertScore({user_id, score, genre} as Score)
 
+      // target: http://localhost:3000/score?genre=guitar_heroes&user_id=4&score=2
+      this.router.navigate(['/score'], { queryParams: { genre: genre, user_id: user_id, score: score } });
+      
     }
   }
 
