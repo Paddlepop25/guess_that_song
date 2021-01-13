@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  image_key?: string;
+  image_key: string;
   score?: number;
   timestamp?: string;
 }

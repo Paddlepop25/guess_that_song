@@ -208,7 +208,8 @@ export class GuitarHeroesComponent implements OnInit {
       this.gameform.reset()
       
       const currentUser = this.authSvc.loggedInUser()
-      // console.log(currentUser)
+      console.log('currentUser', currentUser)
+      
       const genre = 'guitar_heroes' // str
       // @ts-ignore
       const user_id = currentUser[0]['userId'] // num

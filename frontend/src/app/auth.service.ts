@@ -28,7 +28,9 @@ export class AuthService implements CanActivate {
             this.token = res.body.token
   
             let user = res.body.username
+            console.log('userData >>>> ', user)
             let userId = res.body.userId
+            console.log('userData >>>> ', userId)
 
             // @ts-ignore
             obj.username = user
@@ -38,7 +40,6 @@ export class AuthService implements CanActivate {
             localStorage.setItem('auth_token', this.token);
             this.userLoggedIn.next(this.token);
             // const userData = JSON.parse(localStorage.getItem(user))
-            // console.log('userData >>>> ', userData)
             
             // @ts-ignore
             this.currentUser.push(obj)

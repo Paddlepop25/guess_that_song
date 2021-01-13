@@ -123,6 +123,7 @@ SELECT * FROM pop WHERE artist='Michael Jackson';
 SELECT * FROM users;	
 SELECT * FROM users where user_id=2;	
 SELECT * FROM users where username='wilma';
+SELECT * FROM users where username='error';
 SELECT * FROM scores;
 
 

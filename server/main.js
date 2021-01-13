@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const fs = require('fs')
 const express = require('express')
 const morgan = require('morgan')
 // const fetch = require('node-fetch')
@@ -17,9 +18,16 @@ const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 const pool = mysql.createPool({
   host: process.env.MYSQL_SERVER || 'localhost',
   user: process.env.MYSQL_USERNAME,
+  port: process.env.MYSQL_SVR_PORT,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
   connectionLimit: process.env.MYSQL_CON_LIMIT || 4,
+  connectTimeout: 20000,
+  waitForConnections: true,
+  // comment out ssl if running locally. this is for connecting to digital ocean
+  ssl: {
+    ca: fs.readFileSync(__dirname + '/certs/ca-certificate.crt'),
+  },
   timezone: '+08:00',
 })
 
@@ -462,6 +470,7 @@ pool
     const param1 = Promise.resolve(conn)
     const param2 = conn.ping()
     return Promise.all([param1, param2])
+    // return Promise.all([param1])
   })
   .then((result) => {
     const conn = result[0]
