@@ -3,7 +3,6 @@ require('dotenv').config()
 const fs = require('fs')
 const express = require('express')
 const morgan = require('morgan')
-// const fetch = require('node-fetch')
 const cors = require('cors')
 const request = require('request')
 const mysql = require('mysql2/promise')
@@ -48,7 +47,6 @@ const makeSQLQuery = (sql, pool) => {
   }
 }
 
-// const APP_PORT = process.env.APP_PORT
 const AWS_S3_HOSTNAME = process.env.AWS_S3_HOSTNAME
 const AWS_S3_ACCESS_KEY = process.env.AWS_S3_ACCESS_KEY
 const AWS_S3_SECRET_ACCESSKEY = process.env.AWS_S3_SECRET_ACCESSKEY
@@ -98,7 +96,6 @@ const EAGLES = process.env.EAGLES
 const JIMI_HENDRIX = process.env.JIMI_HENDRIX
 const TOMMY_EMMANUEL = process.env.TOMMY_EMMANUEL
 const GUITAR_HEROES = `${TRACKS_ENDPOINT}${JOHN_MAYER}%2C${ERIC_CLAPTON}%2C${COLDPLAY}%2C${EAGLES}%2C${JIMI_HENDRIX}%2C${TOMMY_EMMANUEL}`
-// console.log('GUITAR_HEROES >>>> ', GUITAR_HEROES)
 
 // pop
 const MICHAEL_JACKSON = process.env.MICHAEL_JACKSON
@@ -108,7 +105,6 @@ const ADELE = process.env.ADELE
 const BILLY_JOEL = process.env.BILLY_JOEL
 const BRUNO_MARS = process.env.BRUNO_MARS
 const POP = `${TRACKS_ENDPOINT}${MICHAEL_JACKSON}%2C${JAMES_BLUNT}%2C${AVRIL_LAVIGNE}%2C${ADELE}%2C${BILLY_JOEL}%2C${BRUNO_MARS}`
-// console.log('POP >>>> ', POP)
 
 const authOptions = {
   url: `${TOKEN_ENDPOINT}`,
@@ -131,7 +127,7 @@ const makeAuthMiddleware = (passport) => {
       if (null != err || !user) {
         res.status(401)
         res.type('application/json')
-        res.json({ error: err }) // getting error
+        res.json({ error: err })
         return
       }
       req.user = user
@@ -162,7 +158,6 @@ passport.use(
         //   return
         // }
 
-        // console.log('result.length ---> ', result.length) // 1
         if (result.length > 0) {
           const sqlUser = result[0].username
           const sqlPassword = result[0].password
@@ -186,7 +181,6 @@ passport.use(
 const localStrategyAuth = makeAuthMiddleware(passport)
 
 async function sendMail(user) {
-  // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
@@ -198,9 +192,9 @@ async function sendMail(user) {
   })
 
   let mailOptions = {
-    from: 'Guess That Song 🎵 ', // sender address
+    from: 'Guess That Song 🎵 ',
     to: user.email, // possible to send to list of receivers
-    subject: 'Congratulations! You are registered 💌 ', // subject line
+    subject: 'Congratulations! You are registered 💌 ',
     html: `<h3>Hello ${user.username}</h3>
         <p>You can now play GUESS THAT SONG 🥁🎹🎸. All the best!</p>`,
   }
@@ -222,7 +216,6 @@ app.use(passport.initialize())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// test
 app.get('/', (req, res) => {
   res.status(200)
   res.type('application/json')
@@ -241,25 +234,25 @@ app.post('/register', (req, res) => {
     }
     console.log('File uploaded successfully.')
     const user = req.body
-    console.info('req.body >>> ', req.body) // { formData: {} }
+    // console.info('req.body >>> ', req.body) // shows Object of username, email, password (unhashed)
     const username = req.body.username
-    console.info('req.body >>> ', username) // undefined
     const email = req.body.email
     const password = sha1(req.body.password)
-    console.log('password >>>> ', password)
-    image_key = res.req.file.location
+    const image_key = res.req.file.location
+
     registerUsers([username, password, email, image_key])
       .then((user) => {
         console.log('Registering user success >>>> ', user)
         res.status(200).json({
           Message: 'Success in registering new user',
-          // res_image: res.req.file.location,
-          // res_image_key: res.req.file.key,
+          res_image: res.req.file.location,
+          res_image_key: res.req.file.key,
         })
       })
       .catch((error) => {
         console.error('ERROR registering user >>>> ', error)
         res.status(500).json(error)
+        return
       })
 
     sendMail(user)
@@ -268,8 +261,8 @@ app.post('/register', (req, res) => {
     // save the res in text file and search for url (in location) and key for retrieving
     res.status(200).json({
       message: 'file is uploaded!',
-      res_image: res.req.file.location, // for angular, comment out for express
-      res_image_key: res.req.file.key, // for angular, comment out for express
+      res_image: res.req.file.location,
+      res_image_key: res.req.file.key,
     })
   })
 })
@@ -293,16 +286,14 @@ app.post(
         data: {
           // your own information can come from database, etc
           loginTime: req.user.loginTime,
-          // username: req.user.username,
-          // security: req.user.security,
-          // sign: 'linda',
+          username: req.user.username,
         },
       },
       PASSPORT_TOKEN_SECRET
     )
     // console.info(`user: `, req.user) // user is created by passport and give us info
-    // generate JWT token
 
+    // generate JWT token
     getUser([username]).then((result) => {
       if (result.length > 0) {
         // console.log(result)
@@ -311,7 +302,7 @@ app.post(
 
         res.status(200)
         res.type('application/json')
-        // console.log(userId) // can log
+        console.log(userId)
 
         res.json({
           userId,
@@ -324,54 +315,11 @@ app.post(
   }
 )
 
-// look for token in Http Header
-// authorization: Bearer <token>
-app.get(
-  '/protected/secret',
-  (req, res, next) => {
-    // check if the request has Authorization header
-    const auth = req.get('Authorization')
-    if (null == auth) {
-      res.status(403)
-      res.json({ Message: 'Missing authorization header' }) // only for us to know whats happening. in real life don't tell your users too much
-      return
-    }
-    // Check if token is Bearer authorization type (split up the 2)
-    // Bearer <token>
-    const terms = auth.split(' ')
-    if (terms.length < 2 || terms[0] != 'Bearer') {
-      res.status(403)
-      res.json({ Message: 'Incorrect Authorization' }) // only for us to know whats happening. in real life don't tell your users
-      return
-    }
-
-    const token = terms[1]
-    try {
-      // verify token
-      const verified = jwt.verify(token, TOKEN_SECRET)
-      console.log('verified token --->', verified) // CHECK THIS
-      req.token = verified // so next part can get the token
-
-      // the above can put in function to protect rest of the code.
-      next()
-    } catch (error) {
-      res.status(403)
-      res.json({ Message: 'Incorrect token', Error: error }) // only for us to know whats happening. in real life don't tell your users
-      return
-    }
-  },
-  (req, res) => {
-    res.status(200)
-    res.json({ destination: 'secret place' }) // can be anything. we use this to protect our token
-  }
-)
-
 request.post(authOptions, function (error, response, body) {
   if (!error && response.statusCode === 200) {
     // use the access token to access the Spotify Web API
     let token = body.access_token
     let options_guitar_heroes = {
-      // url: 'https://api.spotify.com/v1/tracks?ids=2jdAk8ATWIL3dwT47XpRfu%2C7utRJ4BeYx85khzP3lKoBX%2C1mea3bSkSGXuIRvnydlB5b%2C40riOy7x9W7GXjyGp4pjAv%2C1Eolhana7nKHYpcYpdVcT5%2C4gFdGHid87z7m5lnLLd2sV',
       url: `${GUITAR_HEROES}`,
       headers: {
         Authorization: 'Bearer ' + token,
@@ -380,8 +328,6 @@ request.post(authOptions, function (error, response, body) {
     }
 
     let options_pop = {
-      // url:
-      // 'https://api.spotify.com/v1/tracks?ids=5ChkMS8OtdzJeqyybCc9R5%2C0vg4WnUWvze6pBOJDTq99k%2C5xEM5hIgJ1jjgcEBfpkt2F%2C4OSBTYWVwsQhGLF9NHvIbR%2C5zA8vzDGqPl2AzZkEYQGKh%2C6SKwQghsR8AISlxhcwyA9R',
       url: `${POP}`,
       headers: {
         Authorization: 'Bearer ' + token,
@@ -389,11 +335,9 @@ request.post(authOptions, function (error, response, body) {
       json: true,
     }
 
-    // when got time, make a function out of request.get() because repeating code
     // guitar_heores
     request.get(options_guitar_heroes, function (error, response, body) {
       const guitar_heroes_result = body['tracks']
-      // console.log('guitar_heroes_result >>>> ', guitar_heroes_result)
 
       let guitar_heroes_arr = []
       for (let i = 0; i < guitar_heroes_result.length; i++) {
@@ -405,9 +349,7 @@ request.post(authOptions, function (error, response, body) {
         obj.uri = guitar_heroes_result[i]['uri']
         guitar_heroes_arr.push(obj)
       }
-      // console.log(guitar_heroes_arr)
 
-      // app.get('/guessthatsong/:genre', (req, res) => {
       app.get('/guessthatsong/guitar_heroes', (req, res) => {
         res.status(200)
         res.type('application/json')
@@ -418,7 +360,6 @@ request.post(authOptions, function (error, response, body) {
     // pop
     request.get(options_pop, function (error, response, body) {
       const pop_result = body['tracks']
-      // console.log('pop_result >>>> ', pop_result)
 
       let pop_arr = []
       for (let i = 0; i < pop_result.length; i++) {
@@ -430,7 +371,6 @@ request.post(authOptions, function (error, response, body) {
         obj.uri = pop_result[i]['uri']
         pop_arr.push(obj)
       }
-      // console.log(pop_arr)
 
       app.get('/guessthatsong/pop', (req, res) => {
         res.status(200)
@@ -441,22 +381,6 @@ request.post(authOptions, function (error, response, body) {
   }
 })
 
-// testing - okay
-// const SQL_READ_ALL_DB = `SELECT * FROM users;`
-// const getAllUsers = makeSQLQuery(SQL_READ_ALL_DB, pool)
-
-// app.get('/getAllUsers', (req, res) => {
-//   getAllUsers([])
-//     .then((results) => {
-//       // console.info(results[0])
-//       res.status(200).json(results)
-//     })
-//     .catch((error) => {
-//       console.error('Error in reading from SQL >>> ', error)
-//       res.status(500).end()
-//     })
-// })
-
 const SQL_GET_ONE_ARTIST_GUITAR_HEROES =
   'SELECT * FROM guitar_heroes WHERE artist=?'
 const getOneArtistGuitarHeroes = makeSQLQuery(
@@ -466,11 +390,9 @@ const getOneArtistGuitarHeroes = makeSQLQuery(
 
 app.get('/guessthatsong/guitar_heroes/:artist', async (req, res) => {
   const artist = req.params['artist']
-  // console.log('artist >>>> ', artist)
 
   await getOneArtistGuitarHeroes(artist)
     .then((result) => {
-      // console.info(result)
       res.status(200).json(result)
     })
     .catch((error) => {
@@ -484,11 +406,9 @@ const getOneArtistPop = makeSQLQuery(SQL_GET_ONE_ARTIST_POP, pool)
 
 app.get('/guessthatsong/pop/:artist', async (req, res) => {
   const artist = req.params['artist']
-  // console.log('artist >>>> ', artist)
 
   await getOneArtistPop(artist)
     .then((result) => {
-      // console.info(result)
       res.status(200).json(result)
     })
     .catch((error) => {
@@ -498,14 +418,11 @@ app.get('/guessthatsong/pop/:artist', async (req, res) => {
 })
 
 // score for guitar_heroes game
-// INSERT into scores (genre, score, timestamp, user_id)
-// values ('guitar_heroes', 6, CURDATE(), 2);
 const SQL_INSERT_SCORE = `INSERT into scores (genre, score, timestamp, user_id)
 values (?, ?, CURDATE(), ?);`
 const insertScoreGuitarHeores = makeSQLQuery(SQL_INSERT_SCORE, pool)
 
 app.post('/score', (req, res) => {
-  // console.log(req.body) // { genre: 'pop', score: 1, user_id: 3 }
   const genre = req.body.genre
   const score = req.body.score
   const user_id = req.body.user_id
@@ -527,7 +444,6 @@ pool
     const param1 = Promise.resolve(conn)
     const param2 = conn.ping()
     return Promise.all([param1, param2])
-    // return Promise.all([param1])
   })
   .then((result) => {
     const conn = result[0]

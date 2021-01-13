@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // console.log(this.authSvc.isUserLoggedIn())
+    console.log('user logged in? ', this.authSvc.isUserLoggedIn())
 
     this.loginForm = this.fb.group({
       username: this.fb.control('', [Validators.required]),

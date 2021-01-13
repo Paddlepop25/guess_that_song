@@ -28,9 +28,9 @@ export class AuthService implements CanActivate {
             this.token = res.body.token
   
             let user = res.body.username
-            console.log('userData >>>> ', user)
+            console.log('logged in user >>>> ', user)
             let userId = res.body.userId
-            console.log('userData >>>> ', userId)
+            console.log('logged in userId >>>> ', userId)
 
             // @ts-ignore
             obj.username = user
@@ -46,7 +46,6 @@ export class AuthService implements CanActivate {
             // console.log(this.currentUser) // ok
             // console.log(this.userLoggedIn) // ok
           }
-          // console.info('token ---> ', this.token)
                     
           return true
         })
@@ -59,16 +58,12 @@ export class AuthService implements CanActivate {
         })
     }
     
-        // isLogin() {
-        //   return this.token != ''
-        //}
-
+    // GONE when page refreshed. very important to have for the submit score button!!
     loggedInUser() {
-      return this.currentUser
+      return this.currentUser 
     }
 
     isUserLoggedIn() {
-      //console.log('this.userLoggedIn >>>> ', this.userLoggedIn) // false
       let authToken = localStorage.getItem('auth_token')
       return (authToken != null ? true: false)
     }
@@ -80,7 +75,7 @@ export class AuthService implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-      console.log(this.isUserLoggedIn())
+      console.log('isUserLoggedIn() >>>> ', this.isUserLoggedIn())
       if (this.isUserLoggedIn())
         return true
         

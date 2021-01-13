@@ -16,7 +16,6 @@ export class GuitarHeroesComponent implements OnInit {
   gameform: FormGroup
 
   guitar_heroes: [] = []
-  // guitarHeroesArray: SongDetails[] = [];
   guitar_heroes_artists: [] = []
 
   info_john_mayer: [] = []
@@ -45,8 +44,6 @@ export class GuitarHeroesComponent implements OnInit {
   constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private activatedRoute: ActivatedRoute, private authSvc: AuthService) { }
   
   ngOnInit(): void {
-    // console.log(this.info_tommy_emmanuel)
-    // console.log(this.track_options_tommy_emmanuel)
 
     this.gameform = this.fb.group({
       answer_john_mayer: this.fb.control('', [Validators.required]),
@@ -59,21 +56,12 @@ export class GuitarHeroesComponent implements OnInit {
       
     this.guessThatSongSvc.getGuitarHeroes()
       .then(result => {
-        // console.log(result[0]['artist'])
         this.guitar_heroes = result
-        // console.log(this.guitar_heroes) // can get all 6 [{…}, {…}, {…}, {…}, {…}, {…}]
 
-        // console.log(result[0])
-        // @ts-ignore
-        // console.log(this.info_john_mayer)
-        
         for (let i=0; i<result.length; i++) {
           let obj = Object()
-          // console.log(result[i]['artist']) // can get all artists
-          // this.info_john_mayer.push(result[0])
           const artist = result[i]['artist']
           obj.artist = artist
-          // console.log(obj)
           // @ts-ignore
           this.guitar_heroes_artists.push(obj)
           
@@ -107,11 +95,8 @@ export class GuitarHeroesComponent implements OnInit {
             this.info_tommy_emmanuel.push(result[i])
           }
 
-          // console.log(this.guitar_heroes_artists[i]['artist']) // all artists, individually
           this.guessThatSongSvc.getGuitarHeroesArtist(this.guitar_heroes_artists[i]['artist'])
           .then(result => {
-            // console.log(result)
-            // console.log(result[0]['artist'])
             
             for (let j=0; j<result.length; j++) {
               const title = result[j]['title']
@@ -122,7 +107,6 @@ export class GuitarHeroesComponent implements OnInit {
                 this.track_options_john_mayer.push(result[j])
                 // @ts-ignore
                 this.title_john_mayer.push(title)
-                // console.log(this.title_john_mayer)
               }
               
               else if (artist == 'Eric Clapton') {
@@ -163,16 +147,7 @@ export class GuitarHeroesComponent implements OnInit {
             }
           })
         }
-
-        // console.log(this.guitar_heroes_artists) // array of 6 objects [{}, {}...] 0: {artist: "John Mayer"}
-        // console.log('track_options_john_mayer >>>> ', this.track_options_john_mayer)
-        // console.log('track_options_eric_clapton >>>> ', this.track_options_eric_clapton)
-        // console.log('track_options_coldplay >>>> ', this.track_options_coldplay)
-        // console.log('track_options_eagles >>>> ', this.track_options_eagles)
-        // console.log('track_options_jimi_hendrix >>>> ', this.track_options_jimi_hendrix)
-        // console.log('track_options_tommy_emmanuel >>>> ', this.track_options_tommy_emmanuel)
       })
-      // console.log(this.guitarHeroesArray) 
       }
 
     onSubmit() {
@@ -182,8 +157,6 @@ export class GuitarHeroesComponent implements OnInit {
       let user_answer_eagles = this.gameform.get('answer_eagles').value
       let user_answer_jimi_hendrix = this.gameform.get('answer_jimi_hendrix').value
       let user_answer_tommy_emmanuel = this.gameform.get('answer_tommy_emmanuel').value
-
-      // console.log(user_answer_jimi_hendrix, user_answer_john_mayer)
 
       if (user_answer_john_mayer == this.title_john_mayer) {
         this.score++
@@ -208,7 +181,7 @@ export class GuitarHeroesComponent implements OnInit {
       this.gameform.reset()
       
       const currentUser = this.authSvc.loggedInUser()
-      console.log('currentUser', currentUser)
+      console.log('currentUser', currentUser) // disappear after page refreshes
       
       const genre = 'guitar_heroes' // str
       // @ts-ignore
@@ -216,7 +189,6 @@ export class GuitarHeroesComponent implements OnInit {
       // @ts-ignore
       const username = currentUser[0]['username']
       const score = this.score // num 
-      // const timestamp = new Date().toString() // its datetime in mySQL
       
       this.guessThatSongSvc.insertScore({genre, user_id, username, score} as Score)
 
@@ -224,6 +196,3 @@ export class GuitarHeroesComponent implements OnInit {
       this.router.navigate(['/score'], { queryParams: { genre: genre, user_id: user_id, username: username, score: score } });
     }
   }
-
-    // this.guessThatSongSvc.initGuitarHeroesSongs()
-    // this.guitarHeroesArray = this.guessThatSongSvc.retrieveGuitarHeroesSongs()     

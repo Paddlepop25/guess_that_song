@@ -57,16 +57,12 @@ export class PopComponent implements OnInit {
 
     this.guessThatSongSvc.getPop()
       .then(result => {
-        // console.log(result)
         this.pop = result
-        // console.log(this.pop) // can get all 6 [{…}, {…}, {…}, {…}, {…}, {…}]
-        // console.log(result[0])
 
         for (let i=0; i<result.length; i++) {
           let obj = Object()
           const artist = result[i]['artist']
           obj.artist = artist
-          // console.log(obj)
           // @ts-ignore
           this.pop_artists.push(obj)
           
@@ -100,13 +96,8 @@ export class PopComponent implements OnInit {
             this.info_bruno_mars.push(result[i])
           }
 
-          // console.log(this.pop_artists[i]['artist']) // all artists, individually
-        
           this.guessThatSongSvc.getPopArtist(this.pop_artists[i]['artist'])
           .then(result => {
-            // console.log(result)
-            // console.log(result[0]['artist'])
-            
             for (let j=0; j<result.length; j++) {
               const title = result[j]['title']
               const artist = result[j]['artist']
@@ -116,7 +107,6 @@ export class PopComponent implements OnInit {
                 this.track_options_michael_jackson.push(result[j])
                 // @ts-ignore
                 this.title_michael_jackson.push(title)
-                // console.log(this.title_john_mayer)
               }
               
               else if (artist == 'James Blunt') {
@@ -186,19 +176,18 @@ export class PopComponent implements OnInit {
     if (user_answer_bruno_mars == this.title_bruno_mars) {
       this.score++
     }
-    // console.log('The SCORE is >>>> ', this.score)
+    console.log('The SCORE is >>>> ', this.score)
 
     this.popform.reset()
     
     const currentUser = this.authSvc.loggedInUser()
-    // console.log(currentUser)
-    const genre = 'pop' // str
+    console.log(currentUser) // disappear after page refreshes
+    const genre = 'pop'
     // @ts-ignore
-    const user_id = currentUser[0]['userId'] // num
+    const user_id = currentUser[0]['userId']
     // @ts-ignore
     const username = currentUser[0]['username']
-    const score = this.score // num 
-    // const timestamp = new Date().toString() // its datetime in mySQL
+    const score = this.score
     
     this.guessThatSongSvc.insertScore({genre, user_id, username, score} as Score)
 

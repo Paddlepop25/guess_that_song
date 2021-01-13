@@ -69,9 +69,6 @@
               <source src="{{ song.preview }}" type="audio/mpeg" />
             </video>
           </div>
-          <!-- <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button> -->
 
           <div *ngFor="let track of track_options_eric_clapton">
             <div class="radio-toolbar">
@@ -126,9 +123,6 @@
               <source src="{{ song.preview }}" type="audio/mpeg" />
             </video>
           </div>
-          <!-- <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button> -->
 
           <div *ngFor="let track of track_options_coldplay">
             <div class="radio-toolbar">
@@ -183,9 +177,6 @@
               <source src="{{ song.preview }}" type="audio/mpeg" />
             </video>
           </div>
-          <!-- <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button> -->
 
           <div *ngFor="let track of track_options_eagles">
             <div class="radio-toolbar">
@@ -234,9 +225,6 @@
               <source src="{{ song.preview }}" type="audio/mpeg" />
             </video>
           </div>
-          <!-- <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button> -->
 
           <div *ngFor="let track of track_options_jimi_hendrix">
             <div class="radio-toolbar">
@@ -291,9 +279,6 @@
               <source src="{{ song.preview }}" type="audio/mpeg" />
             </video>
           </div>
-          <!-- <button class="song_title btn btn-warning mb-2">a</button>
-        <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-        <button class="song_title btn btn-dark">c</button> -->
 
           <div *ngFor="let track of track_options_tommy_emmanuel">
             <div class="radio-toolbar">
@@ -337,7 +322,11 @@
 
 <div class="row">
   <div class="col scoreBtn">
-    <button class="btn btn-danger btn-lg" (click)="onSubmit()">
+    <button
+      class="btn btn-danger btn-lg"
+      (click)="onSubmit()"
+      [disabled]="gameform.invalid"
+    >
       See My Score ✅
     </button>
   </div>

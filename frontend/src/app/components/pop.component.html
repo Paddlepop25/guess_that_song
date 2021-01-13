@@ -255,9 +255,6 @@
               <source src="{{ song.preview }}" type="audio/mpeg" />
             </video>
           </div>
-          <!-- <button class="song_title btn btn-warning mb-2">a</button>
-          <button class="song_title btn btn-info mb-2">{{ song.title }}</button>
-          <button class="song_title btn btn-dark">c</button> -->
 
           <div *ngFor="let track of track_options_bruno_mars">
             <div class="radio-toolbar">
@@ -301,7 +298,11 @@
 
 <div class="row">
   <div class="col scoreBtn">
-    <button class="btn btn-danger btn-lg" (click)="onSubmit()">
+    <button
+      class="btn btn-danger btn-lg"
+      (click)="onSubmit()"
+      [disabled]="popform.invalid"
+    >
       See My Score ✅
     </button>
   </div>

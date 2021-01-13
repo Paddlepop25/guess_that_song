@@ -7,18 +7,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // async registerUser(user: User): Promise<any> {
-  //   // console.log(user) // object
-  //   const result = this.http.post('http://localhost:3000/register', user)
-  //     .toPromise()
-  //     .catch((error:HttpErrorResponse) => {
-  //       console.error('ERROR in registering user ---> ', error)
-  //     })
-  //   return result
-  // }
-
   async registerUser(formData): Promise<any> {
-    console.log(formData) // object
     const result = this.http.post('http://localhost:3000/register', formData)
       .toPromise()
       .catch((error:HttpErrorResponse) => {

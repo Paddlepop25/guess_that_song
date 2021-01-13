@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from '../user.model';
 import { UserService } from '../user.service';
 
 @Component({
@@ -28,26 +27,14 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    // console.log('this.registerForm >>>> ', this.registerForm) // ok
-
-    // const username = this.registerForm.get('username').value
-    // const email = this.registerForm.get('email').value
-    // const password = this.registerForm.get('password').value
 
     const formData = new FormData();
     formData.append('upload', this.imageFile.nativeElement.files[0]);
     formData.append('username', this.registerForm.get('username').value)
     formData.append('email', this.registerForm.get('email').value)
     formData.append('password', this.registerForm.get('password').value)
-    
-    // this.userSvc.registerUser({username, email, password} as User)
-    // this.userSvc.registerUser({formData})
 
-    const result = this.http.post('http://localhost:3000/register', formData)
-    .toPromise()
-    .catch((error:HttpErrorResponse) => {
-      console.error('ERROR in registering user ---> ', error)
-    })
+    this.userSvc.registerUser(formData)
 
     this.router.navigate(['/login'])
     this.registerForm.reset()

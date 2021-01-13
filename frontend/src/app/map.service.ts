@@ -13,19 +13,15 @@ export class MapService {
     return this.http.get<any>('http://localhost:3000')
     .toPromise()
     .then(token =>
-      // console.log(token) 
       this.map_accessToken = token
-      // localStorage.setItem('map_accessToken', JSON.stringify(token))
       )}
 
   displayMap() {
-    // https://www.youtube.com/watch?v=orjkt0VHt1c 
     // important: turn on location services. browser will ask permission to know your location. click ok
     if (!navigator.geolocation) {
       console.log('location is not supported');
     }
 
-    // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
     navigator.geolocation.getCurrentPosition((position) => {
       const coords = position.coords;
       const latLong = [coords.latitude, coords.longitude];
