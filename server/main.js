@@ -12,6 +12,9 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
+const multer = require('multer')
+const AWS = require('aws-sdk')
+const multerS3 = require('multer-s3')
 
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 
@@ -44,6 +47,40 @@ const makeSQLQuery = (sql, pool) => {
     }
   }
 }
+
+// const APP_PORT = process.env.APP_PORT
+const AWS_S3_HOSTNAME = process.env.AWS_S3_HOSTNAME
+const AWS_S3_ACCESS_KEY = process.env.AWS_S3_ACCESS_KEY
+const AWS_S3_SECRET_ACCESSKEY = process.env.AWS_S3_SECRET_ACCESSKEY
+const AWS_S3_BUCKETNAME = process.env.AWS_S3_BUCKETNAME
+
+const spacesEndpoint = new AWS.Endpoint('sfo2.digitaloceanspaces.com')
+
+const s3 = new AWS.S3({
+  endpoint: spacesEndpoint,
+  accessKeyId: AWS_S3_ACCESS_KEY,
+  secretAccessKey: AWS_S3_SECRET_ACCESSKEY,
+})
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: AWS_S3_BUCKETNAME,
+    acl: 'public-read',
+    metadata: function (req, file, cb) {
+      cb(null, {
+        mediaType: file.mimetype,
+        fileName: file.fieldname,
+        originalFilename: file.originalname,
+        uploadDatetime: new Date().toString(),
+      })
+    },
+    key: function (request, file, cb) {
+      console.log('file ---> ', file)
+      cb(null, new Date().getTime() + '_' + file.originalname)
+    },
+  }),
+}).single('upload')
 
 const MAP_ACCESS_TOKEN = process.env.MAP_ACCESS_TOKEN
 const PASSPORT_TOKEN_SECRET = process.env.PASSPORT_TOKEN_SECRET
@@ -180,9 +217,10 @@ async function sendMail(user) {
 const app = express()
 app.use(morgan('combined'))
 app.use(cors({ origin: '*' }))
+app.use(passport.initialize())
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(passport.initialize())
 
 // test
 app.get('/', (req, res) => {
@@ -194,27 +232,46 @@ app.get('/', (req, res) => {
 const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_key, timestamp ) values (?, ?, ?, ?, CURDATE())`
 const registerUsers = makeSQLQuery(SQL_REGISTER_USER, pool)
 
-app.post('/register', express.json(), (req, res) => {
-  const user = req.body
-  // console.info('req.body >>> ', req.body)
-  const username = req.body.username
-  const email = req.body.email
-  const password = sha1(req.body.password)
-  // console.log('password >>>> ', password)
-  const image_key = req.body.image_key
-  const score = req.body.score
+app.post('/register', (req, res) => {
+  // upload to S3
+  upload(req, res, (error) => {
+    if (error) {
+      console.log('error ---> ', error)
+      return res.status(500).json(error.message)
+    }
+    console.log('File uploaded successfully.')
+    const user = req.body
+    console.info('req.body >>> ', req.body) // { formData: {} }
+    const username = req.body.username
+    console.info('req.body >>> ', username) // undefined
+    const email = req.body.email
+    const password = sha1(req.body.password)
+    console.log('password >>>> ', password)
+    image_key = res.req.file.location
+    registerUsers([username, password, email, image_key])
+      .then((user) => {
+        console.log('Registering user success >>>> ', user)
+        res.status(200).json({
+          Message: 'Success in registering new user',
+          // res_image: res.req.file.location,
+          // res_image_key: res.req.file.key,
+        })
+      })
+      .catch((error) => {
+        console.error('ERROR registering user >>>> ', error)
+        res.status(500).json(error)
+      })
 
-  registerUsers([username, password, email, image_key])
-    .then((user) => {
-      console.log('Registering user success >>>> ', user)
-      res.status(200).json({ Message: 'Success in registering new user' })
-    })
-    .catch((error) => {
-      console.error('ERROR registering user >>>> ', error)
-      res.status(500).json(error)
-    })
+    sendMail(user)
 
-  sendMail(user)
+    // console.log('res ---> ', res)
+    // save the res in text file and search for url (in location) and key for retrieving
+    res.status(200).json({
+      message: 'file is uploaded!',
+      res_image: res.req.file.location, // for angular, comment out for express
+      res_image_key: res.req.file.key, // for angular, comment out for express
+    })
+  })
 })
 
 app.post(
