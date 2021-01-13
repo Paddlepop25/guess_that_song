@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
         if (result == false) {
           console.log('User is not authenticated')
           window.alert('The username / password is wrong. Please try again')
-          // this.router.navigate(['/register'])
         }
       })
     this.loginForm.reset()

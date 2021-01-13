@@ -20,7 +20,8 @@ export class AuthService implements CanActivate {
         .toPromise()
         .then(res => {
           if (res.status == 200) {
-            // console.info('logged in user info ---> ', res.body)
+            console.info('logged in user info ---> ', res.body)
+            // localStorage.setItem('map_token', this.token);
 
             let obj = {}
 
@@ -45,6 +46,7 @@ export class AuthService implements CanActivate {
             // console.log(this.userLoggedIn) // ok
           }
           // console.info('token ---> ', this.token)
+                    
           return true
         })
         .catch(err => {
@@ -77,7 +79,7 @@ export class AuthService implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-      // console.log(this.isUserLoggedIn())
+      console.log(this.isUserLoggedIn())
       if (this.isUserLoggedIn())
         return true
         

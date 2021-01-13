@@ -37,6 +37,7 @@ const makeSQLQuery = (sql, pool) => {
   }
 }
 
+const MAP_ACCESS_TOKEN = process.env.MAP_ACCESS_TOKEN
 const PASSPORT_TOKEN_SECRET = process.env.PASSPORT_TOKEN_SECRET
 
 const CLIENT_ID = process.env.CLIENT_ID
@@ -110,6 +111,12 @@ passport.use(
       // perform authentication
       getUser([user]).then((result) => {
         // console.log('result ---> ', result) // logging from db
+
+        // if (result.length <= 0) {
+        //   console.log(' >>> No such username in db <<< ')
+        //   return
+        // }
+
         // console.log('result.length ---> ', result.length) // 1
         if (result.length > 0) {
           const sqlUser = result[0].username
@@ -173,7 +180,7 @@ app.use(passport.initialize())
 app.get('/', (req, res) => {
   res.status(200)
   res.type('application/json')
-  res.json({ Hello: 'Kitty' })
+  res.json(MAP_ACCESS_TOKEN)
 })
 
 const SQL_REGISTER_USER = `INSERT into users (username, password, email, image_key, timestamp ) values (?, ?, ?, ?, CURDATE())`
@@ -249,37 +256,6 @@ app.post(
         })
       }
     })
-
-    // getUser([user]).then((result) => {
-    //   // console.log('result ---> ', result) // logging from db
-    //   // console.log('result.length ---> ', result.length) // 1
-    //   if (result.length > 0) {
-    //     const sqlUser = result[0].username
-    //     const sqlPassword = result[0].password
-
-    //     if (user == sqlUser && sha1(password) == sqlPassword) {
-    //       console.log(' >>> Username & PW matches mySQL <<< ')
-    //       done(null, {
-    //         username: user,
-    //         loginTime: new Date().toString(),
-    //       })
-    //       return
-    //     }
-    //     // incorrect login
-    //     done('Incorrect username and password', false)
-    //   }
-    // })
-
-    // res.status(200)
-    // res.type('application/json')
-    // console.log(userId)
-
-    // res.json({
-    //   userId: userId,
-    //   username,
-    //   message: `Login at ${new Date()}`,
-    //   token,
-    // })
   }
 )
 

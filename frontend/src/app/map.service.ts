@@ -6,6 +6,18 @@ export class MapService {
 
   constructor(private http: HttpClient) {}
 
+  private map = ''
+  map_accessToken = ''
+
+  getMapToken(): Promise<any> { 
+    return this.http.get<any>('http://localhost:3000')
+    .toPromise()
+    .then(token =>
+      // console.log(token) 
+      this.map_accessToken = token
+      // localStorage.setItem('map_accessToken', JSON.stringify(token))
+      )}
+
   displayMap() {
     // https://www.youtube.com/watch?v=orjkt0VHt1c 
     // important: turn on location services. browser will ask permission to know your location. click ok
@@ -24,7 +36,7 @@ export class MapService {
       let mymap = L.map('map').setView(latLong, 14); // 13 is zoom level. 1 is whole map
 
       // @ts-ignore
-      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicGFkZGxlcG9wIiwiYSI6ImNranFxdThodjAwNGUyeHBlZ3lsdXFkdG4ifQ.VhVegUtAn1HDKYAQSEYEtQ', {
+      L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${this.map_accessToken}`, {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
       id: 'mapbox/streets-v11',
