@@ -18,6 +18,7 @@ import { GuessThatSong } from './guessthatsong.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { MapService } from './map.service';
+import { ShowAuthedDirective } from './auth.directive';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -56,7 +57,8 @@ const appRoutes: Routes = [
     ScoreComponent,
     MainComponent,
     GuitarHeroesComponent,
-    PopComponent
+    PopComponent,
+    ShowAuthedDirective
   ],
   imports: [
     BrowserModule,

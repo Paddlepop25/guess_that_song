@@ -1,14 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable()
 export class AuthService implements CanActivate {
   private token = ''
 
-  public userLoggedIn = new Subject();
+  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   currentUser = {};
 
@@ -21,8 +22,6 @@ export class AuthService implements CanActivate {
         .toPromise()
         .then(res => {
           if (res.status == 200) {
-            // console.info('logged in user info ---> ', res.body)
-            // localStorage.setItem('map_token', this.token);
 
             let obj = {}
 
@@ -39,13 +38,14 @@ export class AuthService implements CanActivate {
             obj.userId = userId
 
             localStorage.setItem('auth_token', this.token);
-            this.userLoggedIn.next(this.token);
+            this.isAuthenticatedSubject.next(true);
+
             
             // @ts-ignore
             this.currentUser = obj;
             localStorage.setItem('currentUser', JSON.stringify(obj));
             // console.log(this.currentUser) // ok
-            // console.log(this.userLoggedIn) // ok
+            // console.log(this.urLoggedIn) // ok
             if(this.token != null){
               // console.log('token is not null');
               return true;
@@ -61,10 +61,9 @@ export class AuthService implements CanActivate {
         })
     }
 
-    // GONE when page refreshed. very important to have for the submit score button!!
     loggedInUser() {
       console.log('auth svc>', this.currentUser);
-      console.log(this.currentUser);
+      // console.log(this.currentUser);
       if(Object.entries(this.currentUser).length === 0){
         let currentLocalStorage = localStorage.getItem('currentUser');
         this.currentUser = JSON.parse(currentLocalStorage);
@@ -80,12 +79,21 @@ export class AuthService implements CanActivate {
     logout() {
       localStorage.removeItem('auth_token')
       localStorage.removeItem('currentUser')
-      this.userLoggedIn.next(null);
-      this.userLoggedIn.complete();
+      this.isAuthenticatedSubject.next(false);
+
+    }
+
+    purgeAuth(){
+      let authToken = localStorage.getItem('auth_token');
+      if( authToken != null){
+	this.isAuthenticatedSubject.next(true);
+      }else{
+	this.isAuthenticatedSubject.next(false);
+      }
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-      console.log('isUserLoggedIn() >>>> ', this.isUserLoggedIn())
+      // console.log('isUserLoggedIn() >>>> ', this.isUserLoggedIn())
       if (this.isUserLoggedIn())
         return true
         

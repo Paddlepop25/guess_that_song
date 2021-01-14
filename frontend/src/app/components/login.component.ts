@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     private router: Router, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    console.log('user logged in? ', this.authSvc.isUserLoggedIn())
+    // console.log('user logged in? ', this.authSvc.isUserLoggedIn())
 
     this.loginForm = this.fb.group({
       username: this.fb.control('', [Validators.required]),
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         if (result == true) {
         console.log('USER IS LOGGED IN')
           setTimeout(() => {
-            console.log("delay");
+            // console.log("delay");
             this.spinner.hide();
             this.router.navigate(['/guessthatsong'])
           }, 2000);
