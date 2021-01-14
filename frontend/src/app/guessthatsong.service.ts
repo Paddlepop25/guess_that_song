@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Score } from "./score.model";
+import { environment } from '../environments/environment';
 
 @Injectable()
  export class GuessThatSong {
@@ -8,7 +9,7 @@ import { Score } from "./score.model";
   constructor(private http: HttpClient) {}
 
   async getGuitarHeroes(): Promise<any> {
-    const result = await this.http.get<any>('http://localhost:3000/guessthatsong/guitar_heroes')
+    const result = await this.http.get<any>(`${environment.api_url}/guessthatsong/guitar_heroes`)
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.log('HttpError ---> ', error)
@@ -17,7 +18,7 @@ import { Score } from "./score.model";
   }
 
   async getGuitarHeroesArtist(artist): Promise<any> {
-    const result = await this.http.get<any>(`http://localhost:3000/guessthatsong/guitar_heroes/${artist}`)
+    const result = await this.http.get<any>(`${environment.api_url}/guessthatsong/guitar_heroes/${artist}`)
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.log('HttpError ---> ', error)
@@ -26,7 +27,7 @@ import { Score } from "./score.model";
   }
 
   async getPop(): Promise<any> {
-    const result = await this.http.get<any>('http://localhost:3000/guessthatsong/pop')
+    const result = await this.http.get<any>(`${environment.api_url}/guessthatsong/pop`)
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.log('HttpError ---> ', error)
@@ -35,7 +36,7 @@ import { Score } from "./score.model";
   }
 
   async getPopArtist(artist): Promise<any> {
-    const result = await this.http.get<any>(`http://localhost:3000/guessthatsong/pop/${artist}`)
+    const result = await this.http.get<any>(`${environment.api_url}/guessthatsong/pop/${artist}`)
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.log('HttpError ---> ', error)
@@ -48,7 +49,7 @@ import { Score } from "./score.model";
     console.log('GENRE >>>> ', score.genre)
     console.log('USERID >>>> ', score['user_id'])
 
-    const result = await this.http.post('http://localhost:3000/score', score)
+    const result = await this.http.post(`${environment.api_url}/score`, score)
     .toPromise()
     .catch((error: HttpErrorResponse) => {
       console.error('ERROR in inserting score', error)

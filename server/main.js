@@ -211,8 +211,11 @@ app.use(passport.initialize())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+console.log(__dirname)
+app.use(express.static('./public/dist/frontend'))
 
-app.get('/', (req, res) => {
+
+app.get('/map', (req, res) => {
   res.status(200)
   res.type('application/json')
   res.json(MAP_ACCESS_TOKEN)
@@ -433,6 +436,8 @@ app.post('/score', (req, res) => {
       res.status(500).json({ 'ERROR in adding score': error })
     })
 })
+
+// serve the frontend folder (like using static)
 
 pool
   .getConnection()

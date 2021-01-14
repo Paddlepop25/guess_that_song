@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class MapService {
@@ -10,7 +11,7 @@ export class MapService {
   map_accessToken = ''
 
   getMapToken(): Promise<any> { 
-    return this.http.get<any>('http://localhost:3000')
+    return this.http.get<any>(`${environment.api_url}/map`)
     .toPromise()
     .then(token =>
       this.map_accessToken = token

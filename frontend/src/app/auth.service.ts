@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 import { Subject } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class AuthService implements CanActivate {
@@ -16,7 +17,7 @@ export class AuthService implements CanActivate {
     async login(username, password): Promise<boolean> {
       this.token = '' 
       
-      return await this.http.post<any>('http://localhost:3000/login', {username, password}, {observe: 'response'})
+      return await this.http.post<any>(`${environment.api_url}/login`, {username, password}, {observe: 'response'})
         .toPromise()
         .then(res => {
           if (res.status == 200) {
