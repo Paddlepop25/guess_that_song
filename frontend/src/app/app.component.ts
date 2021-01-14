@@ -18,7 +18,6 @@ export class AppComponent {
 
   constructor(private authSvc: AuthService, private router: Router) {
     this.authSvc.userLoggedIn.subscribe((token) => {
-      console.log(">>>", token);
       if (token != null) {
         this.authTokenUserid.next(true);
         this.isLoggedInToken.subscribe((data)=>{
@@ -34,7 +33,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    // console.log('ngInit');
     if (this.authSvc.isUserLoggedIn()) {
       this.authTokenUserid.next(true);
       this.isLoggedInToken.subscribe((data)=>{
@@ -51,7 +49,6 @@ export class AppComponent {
   onLogout() {
     this.authSvc.logout()
     this.router.routeReuseStrategy.shouldReuseRoute= ()=> false;
-    // this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>this.router.navigate(['/']));
     this.router.navigate(['/'])
   }
 }

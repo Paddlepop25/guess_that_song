@@ -21,7 +21,7 @@ export class AuthService implements CanActivate {
         .toPromise()
         .then(res => {
           if (res.status == 200) {
-            console.info('logged in user info ---> ', res.body)
+            // console.info('logged in user info ---> ', res.body)
             // localStorage.setItem('map_token', this.token);
 
             let obj = {}
@@ -29,9 +29,9 @@ export class AuthService implements CanActivate {
             this.token = res.body.token
   
             let user = res.body.username
-            console.log('logged in user >>>> ', user)
+            // console.log('logged in user >>>> ', user)
             let userId = res.body.userId
-            console.log('logged in userId >>>> ', userId)
+            // console.log('logged in userId >>>> ', userId)
 
             // @ts-ignore
             obj.username = user
@@ -47,7 +47,7 @@ export class AuthService implements CanActivate {
             // console.log(this.currentUser) // ok
             // console.log(this.userLoggedIn) // ok
             if(this.token != null){
-              console.log('token is not null');
+              // console.log('token is not null');
               return true;
             }
           }

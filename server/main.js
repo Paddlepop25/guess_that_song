@@ -48,12 +48,12 @@ const makeSQLQuery = (sql, pool) => {
   }
 }
 
-const AWS_S3_HOSTNAME = process.env.AWS_S3_HOSTNAME
+const APP_S3_HOSTNAME = process.env.APP_S3_HOSTNAME
 const AWS_S3_ACCESS_KEY = process.env.AWS_S3_ACCESS_KEY
-const AWS_S3_SECRET_ACCESSKEY = process.env.AWS_S3_SECRET_ACCESSKEY
+const AWS_S3_SECRET_ACCESSKEY = process.env.AWS_S3_SECRET_ACCESS_KEY
 const AWS_S3_BUCKETNAME = process.env.AWS_S3_BUCKETNAME
 
-const spacesEndpoint = new AWS.Endpoint('sfo2.digitaloceanspaces.com')
+const spacesEndpoint = new AWS.Endpoint(APP_S3_HOSTNAME)
 
 const s3 = new AWS.S3({
   endpoint: spacesEndpoint,
@@ -213,7 +213,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 console.log(__dirname)
 app.use(express.static('./public/dist/frontend'))
-
 
 app.get('/map', (req, res) => {
   res.status(200)

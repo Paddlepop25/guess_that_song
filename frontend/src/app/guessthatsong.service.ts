@@ -45,9 +45,9 @@ import { environment } from '../environments/environment';
   }
 
   async insertScore(score: Score): Promise<any> {
-    console.log('SCORE >>>> ', score['score'])
-    console.log('GENRE >>>> ', score.genre)
-    console.log('USERID >>>> ', score['user_id'])
+    // console.log('SCORE >>>> ', score['score'])
+    // console.log('GENRE >>>> ', score.genre)
+    // console.log('USERID >>>> ', score['user_id'])
 
     const result = await this.http.post(`${environment.api_url}/score`, score)
     .toPromise()
