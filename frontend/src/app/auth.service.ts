@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 import { Subject } from 'rxjs';
-//import { runInThisContext } from "vm";
 
 @Injectable()
 export class AuthService implements CanActivate {
@@ -40,7 +39,6 @@ export class AuthService implements CanActivate {
 
             localStorage.setItem('auth_token', this.token);
             this.userLoggedIn.next(this.token);
-            // const userData = JSON.parse(localStorage.getItem(user))
             
             // @ts-ignore
             this.currentUser = obj;
@@ -52,8 +50,6 @@ export class AuthService implements CanActivate {
               return true;
             }
           }
-                    
-          //return true
         })
         .catch(err => {
           if (err.status == 401) {

@@ -184,7 +184,8 @@ export class PopComponent implements OnInit {
 
     this.popform.reset()
     
-    console.log('>>>> ',this.currentUser) // disappear after page refreshes
+    // console.log('>>>> ',this.currentUser)
+    
     const genre = 'pop'
     // @ts-ignore
     const user_id = this.currentUser.userId

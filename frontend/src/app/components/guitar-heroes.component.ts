@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { GuessThatSong } from '../guessthatsong.service';
 import { Score } from '../score.model';
@@ -41,7 +41,7 @@ export class GuitarHeroesComponent implements OnInit {
 
   score: number = 0
 
-  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private activatedRoute: ActivatedRoute, private authSvc: AuthService) { }
+  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private authSvc: AuthService) { }
   
   ngOnInit(): void {
 
@@ -181,7 +181,7 @@ export class GuitarHeroesComponent implements OnInit {
       this.gameform.reset()
       
       const currentUser = this.authSvc.loggedInUser()
-      console.log('currentUser', currentUser) // disappear after page refreshes
+      // console.log('currentUser', currentUser)
       
       const genre = 'guitar_heroes' // str
       // @ts-ignore

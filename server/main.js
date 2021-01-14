@@ -154,11 +154,6 @@ passport.use(
       getUser([user]).then((result) => {
         // console.log('result ---> ', result) // logging from db
 
-        // if (result.length <= 0) {
-        //   console.log(' >>> No such username in db <<< ')
-        //   return
-        // }
-
         if (result.length > 0) {
           const sqlUser = result[0].username
           const sqlPassword = result[0].password
