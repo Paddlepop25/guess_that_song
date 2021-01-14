@@ -185,9 +185,9 @@ export class GuitarHeroesComponent implements OnInit {
       
       const genre = 'guitar_heroes' // str
       // @ts-ignore
-      const user_id = currentUser[0]['userId'] // num
+      const user_id = currentUser.userId // num
       // @ts-ignore
-      const username = currentUser[0]['username']
+      const username = currentUser.username
       const score = this.score // num 
       
       this.guessThatSongSvc.insertScore({genre, user_id, username, score} as Score)

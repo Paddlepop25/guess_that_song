@@ -26,7 +26,8 @@ const pool = mysql.createPool({
   connectionLimit: process.env.MYSQL_CON_LIMIT || 4,
   connectTimeout: 20000,
   waitForConnections: true,
-  // comment out ssl if running locally. this is for connecting to digital ocean
+  /* comment out ssl if running mySQL locally. 
+  this is for connecting to digital ocean */
   ssl: {
     ca: fs.readFileSync(__dirname + '/certs/ca-certificate.crt'),
   },

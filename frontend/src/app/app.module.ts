@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { NgxSpinnerModule } from "ngx-bootstrap-spinner";
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main.component';
@@ -25,19 +26,23 @@ const appRoutes: Routes = [
   { 
     
     path: 'guessthatsong', component: GuessthatsongComponent,  
-    canActivate : [ AuthService ]  // guard this component if not logged in
+    canActivate : [ AuthService ],
+    runGuardsAndResolvers: 'always'  // guard this component if not logged in
   },
   { 
     path: 'guessthatsong/guitar_heroes', component: GuitarHeroesComponent, 
-    canActivate : [ AuthService ]  // guard this component if not logged in
+    canActivate : [ AuthService ],
+    runGuardsAndResolvers: 'always'  // guard this component if not logged in
   },
   { 
     path: 'guessthatsong/pop', component: PopComponent, 
-    canActivate : [ AuthService ]  // guard this component if not logged in
+    canActivate : [ AuthService ],
+    runGuardsAndResolvers: 'always'  // guard this component if not logged in
   },
   { 
     path: 'score', component: ScoreComponent,
-    canActivate : [ AuthService ]  // guard this component if not logged in
+    canActivate : [ AuthService ],
+    runGuardsAndResolvers: 'always'  // guard this component if not logged in
   },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
@@ -55,10 +60,11 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxSpinnerModule
   ],
   providers: [GuessThatSong, UserService, AuthService, MapService],
   bootstrap: [AppComponent]

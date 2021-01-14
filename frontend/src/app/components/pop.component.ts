@@ -41,11 +41,15 @@ export class PopComponent implements OnInit {
   title_bruno_mars: [] = []
 
   score: number = 0
+  currentUser: any; 
 
-  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private authSvc: AuthService) { }
+  constructor(private fb: FormBuilder, private guessThatSongSvc: GuessThatSong, private router: Router, private authSvc: AuthService) { 
+    this.currentUser = this.authSvc.loggedInUser();    
+  }
 
   ngOnInit(): void {
-
+    this.currentUser = this.authSvc.loggedInUser()
+    
     this.popform = this.fb.group({
       answer_michael_jackson: this.fb.control('', [Validators.required]),
       answer_james_blunt: this.fb.control('', [Validators.required]),
@@ -180,13 +184,12 @@ export class PopComponent implements OnInit {
 
     this.popform.reset()
     
-    const currentUser = this.authSvc.loggedInUser()
-    console.log(currentUser) // disappear after page refreshes
+    console.log('>>>> ',this.currentUser) // disappear after page refreshes
     const genre = 'pop'
     // @ts-ignore
-    const user_id = currentUser[0]['userId']
+    const user_id = this.currentUser.userId
     // @ts-ignore
-    const username = currentUser[0]['username']
+    const username = this.currentUser.username
     const score = this.score
     
     this.guessThatSongSvc.insertScore({genre, user_id, username, score} as Score)

@@ -1,29 +1,30 @@
+<ngx-bootstrap-spinner></ngx-bootstrap-spinner>
 <nav class="navbar navbar-dark bg-dark">
   <a class="navbar-brand" [routerLink]="['/main']">Guess That Song 🥁 🎹 🎸 </a>
   <div class="d-flex justify-content-end">
     <button
-      *ngIf="!authTokenUserid"
+      *ngIf="!authTokenUserid._value"
       class="btn btn-outline-info mr-3"
       [routerLink]="['/login']"
     >
       Login
     </button>
     <button
-      *ngIf="authTokenUserid"
+      *ngIf="authTokenUserid._value"
       class="btn btn-outline-danger mr-3"
       (click)="onLogout()"
     >
       Logout
     </button>
     <button
-      *ngIf="!authTokenUserid"
+      *ngIf="!authTokenUserid._value"
       class="btn btn-outline-warning mr-3"
       [routerLink]="['/register']"
     >
       Register
     </button>
     <button
-      *ngIf="authTokenUserid"
+      *ngIf="authTokenUserid._value"
       class="btn btn-outline-success mr-3"
       [routerLink]="['/guessthatsong']"
     >
