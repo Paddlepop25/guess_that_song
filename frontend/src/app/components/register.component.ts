@@ -1,8 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { NgxSpinnerService } from "ngx-bootstrap-spinner";
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup
 
-  constructor(private fb: FormBuilder, private userSvc: UserService, private router: Router, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private userSvc: UserService, private router: Router, private http: HttpClient, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -27,6 +28,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.spinner.show();
 
     const formData = new FormData();
     formData.append('upload', this.imageFile.nativeElement.files[0]);
@@ -36,7 +38,16 @@ export class RegisterComponent implements OnInit {
 
     this.userSvc.registerUser(formData)
 
-    this.router.navigate(['/login'])
-    this.registerForm.reset()
+    // mine
+    // this.router.navigate(['/login'])
+    // this.registerForm.reset()
+
+    // new
+    setTimeout(() => {
+      // console.log("delay");
+      this.spinner.hide();
+      this.router.navigate(['/login'])
+      this.registerForm.reset()
+    }, 3000);
   }
 }

@@ -75,7 +75,7 @@ const upload = multer({
       })
     },
     key: function (request, file, cb) {
-      console.log('file ---> ', file)
+      // console.log('file ---> ', file)
       cb(null, new Date().getTime() + '_' + file.originalname)
     },
   }),
@@ -211,7 +211,6 @@ app.use(passport.initialize())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-console.log(__dirname)
 app.use(express.static('./public/dist/frontend'))
 
 app.get('/map', (req, res) => {
@@ -240,28 +239,21 @@ app.post('/register', (req, res) => {
 
     registerUsers([username, password, email, image_key])
       .then((user) => {
-        console.log('Registering user success >>>> ', user)
+        // console.log('Registering user success >>>> ', user)
+        console.log('Registering user success >>>> ', res.req.file)
         res.status(200).json({
-          Message: 'Success in registering new user',
-          res_image: res.req.file.location,
-          res_image_key: res.req.file.key,
+          Message: 'Success in registering new user', // will show up in browser console via user.service
+          // res_image: res.req.file.location,
+          // res_image_key: res.req.file.key,
         })
       })
       .catch((error) => {
         console.error('ERROR registering user >>>> ', error)
-        res.status(500).json(error)
+        res.status(500).json(error) //header
         return
       })
 
     sendMail(user)
-
-    // console.log('res ---> ', res)
-    // save the res in text file and search for url (in location) and key for retrieving
-    res.status(200).json({
-      message: 'file is uploaded!',
-      res_image: res.req.file.location,
-      res_image_key: res.req.file.key,
-    })
   })
 })
 

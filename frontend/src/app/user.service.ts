@@ -10,6 +10,9 @@ export class UserService {
   async registerUser(formData): Promise<any> {
     const result = this.http.post(`${environment.api_url}/register`, formData)
       .toPromise()
+      .then(result => {
+        console.log(result)
+      })
       .catch((error:HttpErrorResponse) => {
         console.error('ERROR in registering user ---> ', error)
       })
