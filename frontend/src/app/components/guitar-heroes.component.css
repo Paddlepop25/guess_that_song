@@ -3,6 +3,8 @@ video {
   height: 7.5rem;
   position: relative;
   top: -55px;
+  left: -10px;
+  width: 16.5rem;
 }
 
 h1 {
@@ -49,6 +51,7 @@ label {
 
 .radio-toolbar label:hover {
   background-color: rgb(255, 234, 165);
+  cursor: pointer;
 }
 
 .radio-toolbar input[type="radio"]:focus + label {
