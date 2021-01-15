@@ -243,8 +243,8 @@ app.post('/register', (req, res) => {
         console.log('Registering user success >>>> ', res.req.file)
         res.status(200).json({
           Message: 'Success in registering new user', // will show up in browser console via user.service
-          // res_image: res.req.file.location,
-          // res_image_key: res.req.file.key,
+          // res_image: res.req.file.location, // url location of image
+          // res_image_key: res.req.file.key, // filename with key
         })
       })
       .catch((error) => {
@@ -292,7 +292,6 @@ app.post(
 
         res.status(200)
         res.type('application/json')
-        console.log(userId)
 
         res.json({
           userId,

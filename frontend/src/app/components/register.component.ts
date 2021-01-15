@@ -29,22 +29,17 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.spinner.show();
-
+    
     const formData = new FormData();
     formData.append('upload', this.imageFile.nativeElement.files[0]);
     formData.append('username', this.registerForm.get('username').value)
     formData.append('email', this.registerForm.get('email').value)
     formData.append('password', this.registerForm.get('password').value)
-
+    
     this.userSvc.registerUser(formData)
-
-    // mine
-    // this.router.navigate(['/login'])
-    // this.registerForm.reset()
-
-    // new
+    console.log('USER IS REGISTERED')
+    
     setTimeout(() => {
-      // console.log("delay");
       this.spinner.hide();
       this.router.navigate(['/login'])
       this.registerForm.reset()

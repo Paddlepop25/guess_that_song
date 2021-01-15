@@ -11,7 +11,7 @@ export class UserService {
     const result = this.http.post(`${environment.api_url}/register`, formData)
       .toPromise()
       .then(result => {
-        console.log(result)
+        // console.log(result) // display message from registerUsers res.json
       })
       .catch((error:HttpErrorResponse) => {
         console.error('ERROR in registering user ---> ', error)

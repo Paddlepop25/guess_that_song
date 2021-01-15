@@ -33,9 +33,9 @@ export class LoginComponent implements OnInit {
       .then(result => {
   
         if (result == true) {
-        console.log('USER IS LOGGED IN')
+          // console.log(result) // displays getUser res.json message from main.js
+          console.log('USER IS LOGGED IN')
           setTimeout(() => {
-            // console.log("delay");
             this.spinner.hide();
             this.router.navigate(['/guessthatsong'])
           }, 2000);
