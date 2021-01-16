@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable()
@@ -62,7 +62,7 @@ export class AuthService implements CanActivate {
     }
 
     loggedInUser() {
-      console.log('auth svc>', this.currentUser);
+      // console.log('auth svc>', this.currentUser);
       // console.log(this.currentUser);
       if(Object.entries(this.currentUser).length === 0){
         let currentLocalStorage = localStorage.getItem('currentUser');
@@ -80,15 +80,14 @@ export class AuthService implements CanActivate {
       localStorage.removeItem('auth_token')
       localStorage.removeItem('currentUser')
       this.isAuthenticatedSubject.next(false);
-
     }
 
     purgeAuth(){
       let authToken = localStorage.getItem('auth_token');
-      if( authToken != null){
-	this.isAuthenticatedSubject.next(true);
-      }else{
-	this.isAuthenticatedSubject.next(false);
+      if (authToken != null) {
+	      this.isAuthenticatedSubject.next(true);
+      } else {
+	      this.isAuthenticatedSubject.next(false);
       }
     }
 

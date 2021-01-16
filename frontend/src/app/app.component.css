@@ -2,6 +2,11 @@
   margin: 0;
 }
 
+.username {
+  position: relative;
+  margin-right: 8px;
+}
+
 .footer .navbar {
   margin-top: 22rem;
   color: #ffffff;
@@ -10,3 +15,4 @@
 .footer a {
   color: #ffffff;
 }
+
